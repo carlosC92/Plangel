@@ -1,0 +1,63 @@
+{
+    "eventos_destacados": [
+        {
+            "image": "ImgDestacado1.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        },
+        {
+            "image": "ImgDestacado2.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        },
+        {
+            "image": "ImgDestacado3.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        },
+        {
+            "image": "ImgDestacado4.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        }
+    ],
+
+    "proximos_eventos":[
+        {
+            "image": "ImgEvento1.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        },
+        {
+            "image": "ImgEvento2.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        },
+        {
+            "image": "ImgEvento3.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        },
+        {
+            "image": "ImgEvento4.png",
+            "date" : "17/05",
+            "eventName" : "Johny Blaze Mexico Tour",
+            "price": "389",
+            "location" : "CDMX"
+        }
+    ]
+}
