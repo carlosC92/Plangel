@@ -1,96 +1,55 @@
 <template>
-    <div class="col-xs-12 col-md-10 col-md-offset-1 events">
-        <div class="col-xs-12 featuredEvents">
+    <div class="col-xs-12 events">
+        <div class="col-xs-12">
             <h2 class="colorGray">Eventos destacados</h2>
 
-            <div class="animationEventsBox flexBox position-relative">
-                <div class="col-xs-6 col-md-3 event" v-for="(featuredEvent, index) in events.eventos_destacados" :key="index">
-                    <router-link :to="'event/'+index">
-                        <img :src="require('@/assets/img/events/'+featuredEvent.image)" alt="Evento Destacado 4">
-                    </router-link>
-                    <div class="col-xs-12 eventDescription nopadding">
-                        <p class="colorGreen">{{featuredEvent.date}}</p>
-                        <p>{{featuredEvent.eventName}}</p>
-                        <p class="colorGray">Desde ${{featuredEvent.price}} por persona</p>
-                        <span class="colorGray"><img src="@/assets/img/events/iconPinMap.svg" alt="Evento Listo Location">{{featuredEvent.location}}</span>
-                    </div>
-                </div>
-               
-            </div>
-            <img class="circleEvents" src="img/CirculoRojo.png" alt="">
-            <img class="rotateImg circleEvent2" src="img/Circulos2.png" alt="">
+            <Carrousel style="z-index:1" :key="events" :events='events'></Carrousel>
+           
+            <img class="circleEvents" src="@/assets/img/CirculoRojo.png" alt="">
+            <img class="rotateImg circleEvent2 hidden-xs" src="@/assets/img/Circulos2.png" alt="">
             
         </div>
 
-
+<!-- 
         <div class="col-xs-12 nextEvents">
             <h2 class="colorGray">Proximos Eventos</h2>
-
-            <div class="animationEventsBox flexBox position-relative">
-                <div class="col-xs-6 col-md-3 event" v-for="(nextEvents, index) in events.proximos_eventos" :key="index">
-                    <router-link :to="'event/'+index">
-                        <img :src="require('@/assets/img/events/'+nextEvents.image)" alt="Evento Destacado 4">
-                    </router-link>
-                    <div class="col-xs-12 eventDescription nopadding">
-                        <p class="colorGreen">{{nextEvents.date}}</p>
-                        <p>{{nextEvents.eventName}}</p>
-                        <p class="colorGray">Desde ${{nextEvents.price}} por persona</p>
-                        <span class="colorGray"><img src="@/assets/img/events/iconPinMap.svg" alt="Evento Listo Location">{{nextEvents.location}}</span>
-                    </div>
-                </div>           
-            </div>
+            <Carrousel :events='events.proximos_eventos'></Carrousel>
         </div>
 
         <div class="col-xs-12 nextEvents">
             <h2 class="colorGray">Conciertos</h2>
 
-            <div class="animationEventsBox flexBox position-relative">
-                <div class="animationEventsBox flexBox position-relative">
-                    <div class="col-xs-6 col-md-3 event" v-for="(nextEvents, index) in events.proximos_eventos" :key="index">
-                        <router-link :to="'event/'+index">
-                            <img :src="require('@/assets/img/events/'+nextEvents.image)" alt="Evento Destacado 4">
-                        </router-link>
-                        <div class="col-xs-12 eventDescription nopadding">
-                            <p class="colorGreen">{{nextEvents.date}}</p>
-                            <p>{{nextEvents.eventName}}</p>
-                            <p class="colorGray">Desde ${{nextEvents.price}} por persona</p>
-                            <span class="colorGray"><img src="@/assets/img/events/iconPinMap.svg" alt="Evento Listo Location">{{nextEvents.location}}</span>
-                        </div>
-                    </div>           
-                </div>
-            </div>
+            <Carrousel :events='events.proximos_eventos'></Carrousel>
         </div>
 
         <div class="col-xs-12 nextEvents">
             <h2 class="colorGray">Congreso Simposio</h2>
 
-            <div class="animationEventsBox flexBox position-relative">
-                <div class="animationEventsBox flexBox position-relative">
-                    <div class="col-xs-6 col-md-3 event" v-for="(nextEvents, index) in events.proximos_eventos" :key="index">
-                        <router-link :to="'event/'+index">
-                            <img :src="require('@/assets/img/events/'+nextEvents.image)" alt="Evento Destacado 4">
-                        </router-link>
-                        <div class="col-xs-12 eventDescription nopadding">
-                            <p class="colorGreen">{{nextEvents.date}}</p>
-                            <p>{{nextEvents.eventName}}</p>
-                            <p class="colorGray">Desde ${{nextEvents.price}} por persona</p>
-                            <span class="colorGray"><img src="@/assets/img/events/iconPinMap.svg" alt="Evento Listo Location">{{nextEvents.location}}</span>
-                        </div>
-                    </div>           
-                </div>       
-            </div>
-        </div>
+           <Carrousel :events='events.proximos_eventos'></Carrousel>
+        </div> -->
     </div>
 </template>
 
 <script>
-import events from '../events.json'
+import axios from 'axios';
+// import events from '../events.json'
+import Carrousel from './Carrousel.vue'
 export default {
    name:'Events',
+   components: {Carrousel},
    data() {
        return {
-           events: events
+            events: [],
        }
+   },
+   created() {
+        axios.get('http://api.plangel.com/events')
+        .then(response => {
+            this.events = response.data.data;
+        })
+        .catch(error => {
+            console.log(error)
+        })
    },
 }
 </script>
@@ -99,7 +58,9 @@ export default {
 
 
 /*Search Bar*/
-
+.slick-slide img{
+    display: inline;
+}
 .searchBar{
     position: absolute;
     bottom: -25px;
@@ -147,25 +108,6 @@ form.example input[type=text] {
 /*Events*/
 
 
-.colorGreen{
-    color : #21A8C1;
-}
-
-.colorWhite{
-    color:white;
-}
-
-.colorGray{
-    color:#707070;
-}
-
-.colorLila{
-   color: #E81F76;
-}
-
-.nopadding{
-    padding: 0px;
-}
 
 .divImgHeader{
     padding: 0px;
@@ -216,12 +158,6 @@ form.example input[type=text] {
 }
 
 
-.event {
-    flex-shrink: 0;
-    transition: .5s;
-    z-index: 1;
-}
-
 .event > a > img{
     width: 100%
 }
@@ -233,12 +169,16 @@ form.example input[type=text] {
     z-index: 0;
 }
 
+.event{
+    margin: 20px 0px;
+}
+
 
 .event > div span img{
     width: 10px;
     vertical-align: initial;
     margin-right: .4em;
-
+    display: inline;
 }
 
 .eventDescription{
@@ -277,8 +217,8 @@ form.example input[type=text] {
 
 .circleEvent2{
     position: absolute;
-    top: 40px;
-    right: -10vw;
+    top: 10%;
+    left: 90%;
     z-index: 0
 }
 

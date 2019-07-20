@@ -1,7 +1,7 @@
 <template>
     <div class="event">
         <NavBar/>
-        <Event/>
+        <Event @openModal="openModal" @closeModal="closeModal"/>
     </div>
 </template>
 
@@ -14,7 +14,15 @@ export default {
     name:'event',
     components:{
         NavBar,
-        Event
-    }
+        Event,
+    },
+    methods: {
+        openModal(value){
+            this.$emit('openModal',value)
+        },
+        closeModal(value){
+            this.$emit('closeModal',value)
+        }
+    },
 }
 </script>

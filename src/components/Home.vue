@@ -12,7 +12,7 @@
           <div class="col-xs-12 col-md-5 colorGray">
               <h2>¡Ya disponible!</h2>
               <p>Ahora ponemos nuestro poderoso software de gestión de eventos en tus manos para que puedas organizar cualquier evento de forma simple y eficiente.</p>
-              <a href="#" class="colorLila">Comienza ahora</a><i class="colorLila fa fa-arrow-right"></i>
+              <router-link to="/contactUs" class="colorLila">Comienza ahora</router-link><i class="colorLila fa fa-arrow-right"></i>
           </div>
           <img class="circleDiv" src="../assets/img/home/Circulos2.png" alt="">
       </div>
@@ -46,7 +46,7 @@
                   <h2 class="colorWhite">¡Organiza tu primer evento ahora!</h2>  
               </div>
               <div class="col-xs-12 col-md-6 text-center">
-                  <a class="colorWhite buttonWhite" href="#">Comenzar</a>
+                   <router-link to="/contactUs" class="colorWhite buttonWhite">Comenzar</router-link>
               </div>
           </div>
         
@@ -87,7 +87,6 @@ export default {
 
 .divImgHeader{
     padding: 0px;
-    z-index: 1
 }
 .divImgHeader img{
     width: 100%;
@@ -314,6 +313,50 @@ export default {
 .circle:hover{
     background-color:#82235F;
     cursor: pointer;
+}
+
+
+@media (max-width: 767px) {
+    .description > div{
+        text-align: center;
+    }
+    
+
+
+
+    .description > div p{
+        padding-right: 0;
+    }
+
+    .ourAllies > div > div img{
+        width: 100%;
+    }
+
+    .comment{
+        width: 100%;
+    }
+
+    .divImgHeader div h1{
+        font-size: 30px;
+    }
+
+    .divImgBottom > div h2{
+        font-size: 30px;
+    }
+
+    .divImgBottom > div{
+        flex-wrap: wrap;
+        text-align: center
+    }
+
+    .buttonWhite{
+        padding: .3em 3em;
+    }
+
+    .comments > div{
+        margin-left: 0px;
+    }
+
 }
 
 </style>

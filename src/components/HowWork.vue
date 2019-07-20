@@ -15,12 +15,12 @@
                 <div class="col-xs-6 col-sm-4">
                     <img src="../assets/img/how_work/Icono1.png" alt="Crea tu evento">
                     <h4>CREA TU EVENTO</h4>
-                    <p>Cuéntanos los detalles importantes para hacer una pagina personalizada.</p>
+                    <p>Cuéntanos los detalles importantes para hacer una página personalizada.</p>
                 </div>
                 <div class="col-xs-6 col-sm-4">
                     <img src="../assets/img/how_work/Icono2.png" alt="Realiza invitaciones">
                     <h4>REALIZA INVITACIONES</h4>
-                    <p>Crea una invitacion digital y enviala a todos tus invitados por correo y SMS.</p>
+                    <p>Crea una invitación digital y envíala a todos tus invitados por correo y SMS.</p>
                 </div>
                 <div class="col-xs-6 col-sm-4">
                     <img src="../assets/img/how_work/Icono3.png" alt="Confimar asistencia">
@@ -30,7 +30,7 @@
                 <div class="col-xs-6 col-sm-4">
                     <img src="../assets/img/how_work/Icono4.png" alt="Realizar cobranzar">
                     <h4>REALIZA COBRANZA</h4>
-                    <p>Los invitados podran separar con un abono e ir pagando poco a poco.Tú tendrás una consola con informacion en tiempo real.</p>
+                    <p>Los invitados podran separar con un abono e ir pagando poco a poco. Tú tendrás una consola con informacion en tiempo real.</p>
                 </div>
                 <div class="col-xs-6 col-sm-4">
                     <img src="../assets/img/how_work/Icono5.png" alt="Consolidacion">

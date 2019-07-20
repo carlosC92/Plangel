@@ -1,33 +1,42 @@
 <template>
-    <nav id="navbar" class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span> 
-                </button>
-                <router-link to="/" class="brand">
-                    <img id="brand-image" src="../assets/img/logo.png" alt="IdearamaStudio" class="navbar-brand">
-                </router-link>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><router-link to="/">¿Quienes Somos?</router-link></li>
-                    <li><router-link to="/howWork">¿Como Funciona?</router-link></li>
-                    <li><router-link to="/events">Eventos</router-link></li>
-                    <li><a href="#">Historial</a></li>
-                    <li><router-link to="/contactUs">Contacto</router-link></li>
-                    <li><a class="btnLogin" href="#">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<navbar>
+    <router-link to="/" slot="brand">
+        <img id="brand-image" src="../assets/img/logo.png" alt="IdearamaStudio" class="img-responsive navbar-brand">
+    </router-link>
+  <template slot="collapse">
+    <navbar-nav right>
+       <dropdown tag="li">
+            <a class="dropdown-toggle" role="button">Idiomas<span class="caret"></span></a>
+            <template slot="dropdown">
+            <li><a @click="changeLocale('en')" role="button">{{ $t('Ingles') }}</a></li>
+            <li><a @click="changeLocale('es')" role="button">{{ $t('Español') }}</a></li>
+            </template>
+        </dropdown>
+        <ul data-toggle="dropdown" class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+        </ul>
+        <li><router-link to="/">¿Quienes Somos?</router-link></li>
+        <li><router-link to="/howWork">¿Como Funciona?</router-link></li>
+        <li><router-link to="/events">Eventos</router-link></li>
+        <!-- <li><a href="#">Historial</a></li> -->
+        <li><router-link to="/contactUs">Contacto</router-link></li>
+        <li><router-link class="btnLogin" to="/login">Login</router-link></li>
+    </navbar-nav>
+  </template>
+</navbar>
 </template>
 
 <script>
+import i18n from '@/lang/i18n';
 export default {
-  name: 'NavBar',
+    name: 'NavBar',
+    methods: {
+        changeLocale(locale) {
+            i18n.locale = locale;
+        }
+    }
 }
 </script>
 
@@ -47,8 +56,6 @@ export default {
 .navbar ul{
     padding: 1.3em 0;
 }
-
-
 .navbar ul li a{
     font-family: GothamMedium;
     color: #4C4650;

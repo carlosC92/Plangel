@@ -3,7 +3,7 @@
           <h2 class="text-center">Usuarios en todo México organizan con Evento Listo</h2>
           <p class="colorGray text-center">La herramienta #1 en organización de eventos en destino</p>
 
-          <div class="col-xs-12 col-md-8 col-md-offset-2 comments text-center nopadding" >
+          <div class="col-xs-12 col-md-8 col-md-offset-2 comments text-center" >
               <div :style="{left : -(buttonClicked*100) +'%'}" class="comment" v-for="(comment,index) in comments" :key="index">
                   <img :src="comment.image" alt="">
                    <p>{{comment.comment}}</p>
@@ -19,6 +19,7 @@
       </div>
 </template>
 <script>
+ var mobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
 export default {
     name:"Comments",
     data() {
@@ -51,27 +52,34 @@ export default {
                 {image: require('@/assets/img/home/ImgUser2.png'),
                 comment: 'Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae',
                 personName: 'Sara Duarte'},
-                {image: require('@/assets/img/home/ImgUser2.png'),
-                comment: 'Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae',
-                personName: 'Sara Duarte'},
-                {image: require('@/assets/img/home/ImgUser2.png'),
-                comment: 'Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae',
-                personName: 'Sara Duarte'},
-                {image: require('@/assets/img/home/ImgUser2.png'),
-                comment: 'Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae',
-                personName: 'Sara Duarte'},
 
             ],
             
             COMMENTSPERPAGE:3,
-            buttonClicked : 0
+            buttonClicked : 0,
+            isMobile : false
         }  
+    },
+    mounted() {
+        if(mobile) {
+            setInterval(function () { this.increase() }.bind(this), 3000)
+        }
     },
     methods: {
         click(event){
           this.buttonClicked =  [...event.target.parentNode.children].findIndex(c => c == event.target)
-        }  
-    },
+        },
+
+        increase(){
+            if(this.buttonClicked < this.comments.length-1){
+                this.buttonClicked++;
+            }else{
+                this.buttonClicked = 0;
+            }
+           
+        },
+
+    }
 }
 </script>
 
@@ -207,6 +215,17 @@ export default {
 .circle:hover{
     background-color:#82235F;
     cursor: pointer;
+}
+
+
+
+@media (max-width: 767px) {
+    .comments > div{
+        margin-left: 0px;
+    }
+    .comment{
+        width:100%;
+    }
 }
 </style>
 

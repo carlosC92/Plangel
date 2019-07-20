@@ -1,6 +1,6 @@
 <template>
     <div class="contact">
-        <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 flexbox">
             <div class="col-xs-12 col-lg-5 descriptionContact text-right">
                 <h2>Contáctanos</h2>
                 <p class="colorGray" >Comunícate con nosotros, con gusto te resolveremos todas tus dudas</p>
@@ -8,8 +8,8 @@
             <div class="col-xs-12 col-lg-6 col-lg-push-1 boxContact">
                 <form action="/action_page.php">
                     <div class="form-group col-xs-12">
-                    <label for="name">Nombre</label>
-                    <input type="text" class="form-control" id="name">
+                        <label for="name">Nombre</label>
+                        <input type="text" class="form-control" id="name">
                     </div>
                     <div class="form-group col-xs-12 col-md-6">
                     <label for="topic">Asunto</label>
@@ -22,6 +22,10 @@
                     <div class="form-group col-xs-12">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <label for="message">Mensaje</label>
+                        <textarea rows="5" class="form-control" id="message"></textarea>
                     </div>
                     <div class="col-xs-12">
                         <button type="submit" class="btnEnviar">ENVIAR</button>
@@ -47,6 +51,15 @@ export default {
 <style scoped>
 
 
+textarea{
+    resize: none;
+}
+
+.flexbox{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
 
 .colorGray{
     color: #707070;
@@ -64,7 +77,6 @@ export default {
     background: linear-gradient(to right, #21A8C1 , #E81F76);
     border-radius: 50px;
     padding: .7em 5em;
-    width: 200px;
     border: none;
     color: white;
     font-family: GothamMedium;
@@ -73,7 +85,7 @@ export default {
 }
 
 .contact{
-    height: calc(100% - 170px);
+    height: calc(100% - 100px);
     position: relative;
 }
 
@@ -95,13 +107,15 @@ export default {
     font-size: 25px;
 }
 
+textarea{
+     background-color: #e9eef3;
+}
 .boxContact label{
     font-family: GothamBold;
 }
 
 .boxContact input:not([type=checkbox]){
     height: 50px;
-    background-color: #F4EFF7;
     border: none;
 }
 
@@ -115,7 +129,6 @@ input[type=checkbox]:not(:checked) + label{
     left: -250px;
     width: 550px;
     z-index: 0;
-    bottom: 0
 }
 
 .circuloAzulForm{
