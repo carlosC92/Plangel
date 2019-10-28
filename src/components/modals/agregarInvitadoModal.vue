@@ -4,25 +4,25 @@
     <div class="col-xs-10 col-xs-offset-1 text-center">        
         <div class="form-group col-xs-12">
             <label for="nameEvent">Nombre del invitado</label>
-            <input v-if="user" type="text" v-model="name" class="form-control">
+            <input v-if="user" type="text" v-model="user.name" class="form-control">
             <input v-else type="text" v-model="name" value="" class="form-control">
         </div>
 
         <div class="form-group col-xs-12">
             <label for="nameEvent">Correo eletrónico</label>
-            <input v-if="user" type="email" v-model="email" class="form-control">
+            <input v-if="user" type="email" v-model="user.email" class="form-control">
             <input v-else type="email" v-model="email" class="form-control">
         </div>
 
         <div class="form-group col-xs-12">
             <label for="nameEvent">Móvil</label>
-            <input v-if="user" type="text" v-model="phone" class="form-control">
+            <input v-if="user" type="text" v-model="user.phone" class="form-control">
             <input v-else type="text" v-model="phone" class="form-control">
         </div>
 
         <div class="form-group col-xs-12">
             <label for="nameEvent">Observaciones</label>
-            <input v-if="user" type="text" v-model="observations" class="form-control">
+            <input v-if="user" type="text" v-model="user.observations" class="form-control">
             <input v-else type="text" v-model="observations" class="form-control">
         </div>
     </div>
@@ -53,21 +53,21 @@ export default {
     },
     methods: {
         saveGuest(){
-            axios.post('http://api.plangel.com/event/1/guest', {
-            name: this.name,
-            email: this.email,
-            phone: this.phone,         
-            observations : this.observations,
-            relationship : "Tio",
-            importance : "Muy Importante",
-            idUser : 1          
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            axios.put('http://api.plangel.com/event/29/guest/3', {
+                name: this.user ? this.user.name : this.name,
+                email: this.user ? this.user.email : this.email,
+                phone: this.user ? this.user.phone : this.phone,         
+                observations : this.user ? this.user.observations : this.observations,
+                relationship : "Tio",
+                importance : "Muy Importante",
+                idUser : 1          
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         }
     },
 }

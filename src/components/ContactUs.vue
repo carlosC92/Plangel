@@ -1,34 +1,36 @@
 <template>
     <div class="contact">
+        <vue-snotify></vue-snotify>
+        <Loader :loader = loader></Loader>
         <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 flexbox">
             <div class="col-xs-12 col-lg-5 descriptionContact text-right">
                 <h2>Contáctanos</h2>
                 <p class="colorGray" >Comunícate con nosotros, con gusto te resolveremos todas tus dudas</p>
             </div>
             <div class="col-xs-12 col-lg-6 col-lg-push-1 boxContact">
-                <form action="/action_page.php">
+                <form>
                     <div class="form-group col-xs-12">
                         <label for="name">Nombre</label>
-                        <input type="text" class="form-control" id="name">
+                        <input v-validate type="text" required name="name" v-model="name" class="form-control" id="name">
+                        <p v-show="errors.has('name')" class="text-center color-red">{{ errors.first('name') }}</p>
                     </div>
-                    <div class="form-group col-xs-12 col-md-6">
-                    <label for="topic">Asunto</label>
-                    <input type="text" class="form-control" id="topic">
-                    </div>
-                    <div class="form-group col-xs-12 col-md-6">
+                    <div class="form-group col-xs-12">
                         <label for="cel">Celular</label>
-                        <input type="tel" class="form-control" id="cel">
+                        <input v-validate type="number" name="phone" v-model="phone" class="form-control " required>
+                        <p class="text-center color-red">{{ errors.first('phone') }}</p>
                     </div>
                     <div class="form-group col-xs-12">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email">
+                        <input v-validate type="email" name="email" v-model="email" class="form-control" required>
+                        <p class="text-center color-red">{{ errors.first('email') }}</p>
                     </div>
                     <div class="form-group col-xs-12">
                         <label for="message">Mensaje</label>
-                        <textarea rows="5" class="form-control" id="message"></textarea>
+                        <textarea v-validate rows="5" name="message" v-model="message" class="form-control" required></textarea>
+                        <p class="text-center color-red">{{ errors.first('message') }}</p>
                     </div>
                     <div class="col-xs-12">
-                        <button type="submit" class="btnEnviar">ENVIAR</button>
+                        <button type="button" @click="validate()" class="btnEnviar">ENVIAR</button>
                     </div>              
                 </form>
                 <img class="circuloAzulForm hidden-xs" src="../assets/img/CirculoAzul_2x.png" alt="Circulo Azul Evento Listo">
@@ -41,8 +43,66 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Loader from './Loader.vue'
 export default {
-    name:'ContactUs'
+    name:'ContactUs',
+    data() {
+        return {
+            name : null,
+            email : null,
+            phone : null,
+            message :null,
+            loader : null
+        }
+    },
+    components :{
+        Loader
+    },
+    methods: {
+        sendMessage(){  
+            return axios.post('http://api.plangel.com/contact',{
+                name : this.name,
+                phone : this.phone,
+                message : this.message,
+                email : this.email
+            })
+        },
+        mounted() {
+            this.$validator.localize('es', {
+                messages: {
+                    required: (field) => '* ' + field + 'es requerido'
+                },
+                attributes: {
+                    name: 'name'
+                } 
+            })
+        },
+        validate(){
+            this.$validator.localize('es');
+            this.$validator.validateAll()
+            .then(async (response) => {
+                this.loader = true;
+                await this.sendMessage() 
+                .then(response => {
+                    this.loader = false;
+                    this.$snotify.success('Le responderemos a la brevedad posible','Mensaje enviado', {
+                        timeout: 1500,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+                    });  
+                })
+                .catch(error => {
+                    this.loader = false;
+                    console.log(error)
+                });
+            })
+            .catch(() => {
+
+            });   
+        }
+    },
 }
 </script>
 
@@ -89,7 +149,7 @@ textarea{
     position: relative;
 }
 
-.contact > div{
+.contact > div:not(:first-of-type):not(:nth-of-type(2)){
     z-index: 1;
     position: absolute;
     top: 50%;

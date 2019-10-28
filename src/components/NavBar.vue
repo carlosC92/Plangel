@@ -5,13 +5,13 @@
     </router-link>
   <template slot="collapse">
     <navbar-nav right>
-       <dropdown tag="li">
+       <!-- <dropdown tag="li">
             <a class="dropdown-toggle" role="button">Idiomas<span class="caret"></span></a>
             <template slot="dropdown">
             <li><a @click="changeLocale('en')" role="button">{{ $t('Ingles') }}</a></li>
             <li><a @click="changeLocale('es')" role="button">{{ $t('Español') }}</a></li>
             </template>
-        </dropdown>
+        </dropdown> -->
         <ul data-toggle="dropdown" class="dropdown-menu">
             <li><a href="#">HTML</a></li>
             <li><a href="#">CSS</a></li>

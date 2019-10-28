@@ -1,9 +1,25 @@
 <template>
-    <div class="col-xs-12 events">
+    <div class="col-xs-12 events nopadding">
+        <vue-snotify></vue-snotify>
+        <Loader :loader = loader></Loader>
+        <div class="col-xs-12 divImgHeader text-center">
+            <img src="../assets/img/home/Bg_Header.png" class="img-responsive" alt="Background Evento Listo">   
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                    <h1 class="colorWhite">Encuentra tu evento</h1>
+            </div>       
+            <div class="col-xs-6 col-xs-offset-3 searchBar">
+                <div class="example">
+                    <input type="text" v-model="eventToSearch" @keyup="search" placeholder="Conciertos, bodas, congresos... encuentra cualquier evento" name="search">
+                    <button type="button"><font-awesome-icon icon="search" /></button>
+                </div>         
+            </div> 
+        </div>
         <div class="col-xs-12">
             <h2 class="colorGray">Eventos destacados</h2>
 
-            <Carrousel style="z-index:1" :key="events" :events='events'></Carrousel>
+            
+            <Carrousel style="z-index:1" v-if="event_search.length > 0" :events='event_search'></Carrousel>
+            <Carrousel style="z-index:1" v-else :events='events'></Carrousel>
            
             <img class="circleEvents" src="@/assets/img/CirculoRojo.png" alt="">
             <img class="rotateImg circleEvent2 hidden-xs" src="@/assets/img/Circulos2.png" alt="">
@@ -32,30 +48,71 @@
 
 <script>
 import axios from 'axios';
+import Loader from './Loader.vue'
+
 // import events from '../events.json'
 import Carrousel from './Carrousel.vue'
 export default {
    name:'Events',
-   components: {Carrousel},
+   components: {
+       Carrousel,
+       Loader
+       },
    data() {
        return {
             events: [],
+            loader : null,
+            eventToSearch : '',
+            event_search : []
        }
    },
-   created() {
-        axios.get('http://api.plangel.com/events')
+    created() {   
+        this.loader = true    
+        axios.get('http://apiplan.smuffi.pet/events')
         .then(response => {
             this.events = response.data.data;
+            this.loader = false
+            console.log(response)
         })
         .catch(error => {
             console.log(error)
         })
+    },
+   methods: {
+        search(e){ 
+           if(this.eventToSearch != ""  && event.key == "Enter"){
+            this.loader = true   
+            axios.get('http://apiplan.smuffi.pet/event/'+this.eventToSearch+'/search')
+            .then(response => {
+                this.event_search = response.data.data;
+                this.loader = false
+                if(response.data.data.length == 0){
+                    this.$snotify.error('No se encontraron eventos','Sin resultados', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+                    });
+                }
+                console.log(response)
+            })
+            .catch(error => {
+                this.loader = false
+                this.$snotify.error('Porfavor intentelo de nuevo','Ocurrio un error', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+                });
+            })
+           }
+           
+       }
    },
 }
 </script>
 
 <style scoped>
-
 
 /*Search Bar*/
 .slick-slide img{
@@ -66,11 +123,11 @@ export default {
     bottom: -25px;
 }
 
-form.example{
+.searchBar .example{
     box-shadow: -1px 6px 20px #b1b1b1;
     border-radius: 50px;
 }
-form.example input[type=text] {
+.searchBar .example input[type=text] {
     font-size: 17px;
     border: 0px;
     float: left;
@@ -83,7 +140,7 @@ form.example input[type=text] {
     font-family: GothamBook;
   }
   
-  form.example button {
+  .searchBar .example button {
     float: left;
     width: 20%;
     background: white;
@@ -94,14 +151,16 @@ form.example input[type=text] {
     border-radius:0px 50px 50px 0px;
     padding: 15px;
     outline: none;
+    height: 54px;
   }
   
   
-  form.example::after {
+  .searchBar .example::after {
     content: "";
     clear: both;
     display: table;
   }
+
 
 
 

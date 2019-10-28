@@ -1,202 +1,110 @@
 <template>
     <div class="container-fluid">
             <h4 class="text-center">Cronograma de actividades</h4>
-        <div class="row cronograma">        
-            <div class="col-xs-12 date">
-                <div>
-                    <p>9</p>
-                    <p>JUL</p>
-                </div>
-            </div> 
-            <div class="col-xs-12 col-md-10 col-md-offset-1 crogramActivity">
-                <div class="col-xs-2 hidden-xs nopadding">
-                    <img src="../../assets/img/crograma1.png" alt="">
-                </div>
-                <div class="col-xs-12 col-md-3 activityData">
-                    <p>Actividad</p>
-                    <h5>Titulo de actividad</h5>
-                    <p>09/07/2018</p>
-                    <p>09:00 AM a 13:00 PM</p>
-                    <div class="col-xs-6 col-md-6 nopadding">
-                        <p>Código de Vestimenta:</p>
-                        <p>Formal</p>
+        <div class="row cronograma" v-if="cronograma">
+            <div class="col-12" v-for="(element, index) in cronograma.data" :key="index">
+                <div class="col-xs-12 date">
+                    <div>
+                        <p>{{getDay(element.date)}}</p>
+                        <p>{{getMonth(element.month)}}</p>
                     </div>
-                    <div class="col-xs-6 col-md-6 nopadding">
-                        <p>Costo:</p>
-                        <p>$499 P/P</p>
+                </div> 
+                <div class="col-xs-12 col-md-10 col-md-offset-1 crogramActivity">
+                    <div class="col-xs-2 hidden-xs nopadding">
+                        <img src="../../assets/img/crograma1.png" alt="">
                     </div>
-                    <div class="col-xs-6 col-md-6 nopadding">
-                        <p>Edad Mínima:</p>
-                        <p>2 años</p>
+                    <div class="col-xs-12 col-md-3 activityData">
+                        <p>Actividad</p>
+                        <h5>{{element.type}}</h5>
+                        <p>{{getDateFormat(element.date)}}</p>
+                        <!-- <p>09:00 AM a 13:00 PM</p> -->
+                       <p>{{element.hour}}</p>
+                        <div class="col-xs-6 col-md-6 nopadding">
+                            <p>Código de Vestimenta:</p>
+                            <p>{{element.clothing}}</p>
+                        </div>
+                        <div class="col-xs-6 col-md-6 nopadding">
+                            <p>Costo:</p>
+                            <p>$499 P/P</p>
+                        </div>
+                        <div class="col-xs-6 col-md-6 nopadding">
+                            <p>Edad Mínima:</p>
+                            <p>2 años</p>
+                        </div>
+                        <div class="col-xs-6 col-md-6 nopadding">
+                            <p>Tipo de Actividad:</p>
+                            <p>Si</p>
+                        </div>
                     </div>
-                    <div class="col-xs-6 col-md-6 nopadding">
-                        <p>Tipo de Actividad:</p>
-                        <p>Si</p>
+                    <div class="col-xs-4 activityInfo">
+                        <p>Descripcion</p>
+                        <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
+                        <p>Recomendaciones</p>
+                        <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
+                        <p>Observaciones</p>
+                        <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
                     </div>
-                </div>
-                <div class="col-xs-4 activityInfo">
-                    <p>Descripcion</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                    <p>Recomendaciones</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                    <p>Observaciones</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                </div>
-                <div class="col-xs-12 col-md-3 hotelDescription">
-                    <p>Sede</p>
-                    <div class="col-xs-4 nopadding hidden-xs">
-                        <img src="../../assets/img/ImgHotel.png" alt="">
-                    </div>
-                    <div class="col-xs-8 nopadding">
-                        <h5>Hard Rock</h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <p>Cancun, Q. Roo</p>
-                    </div>
-                    <div class="col-xs-12 nopadding">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit…</p>
-                    </div>
-                </div>
-            </div>
-
-               <div class="col-xs-12 date">
-                <div>
-                    <p>9</p>
-                    <p>JUL</p>
-                </div>
-            </div> 
-            <div class="col-xs-12 col-md-10 col-md-offset-1 crogramActivity">
-                <div class="col-xs-2 hidden-xs nopadding">
-                    <img src="../../assets/img/crograma1.png" alt="">
-                </div>
-                <div class="col-xs-4 col-md-3 activityData">
-                    <p>Actividad</p>
-                    <h5>Titulo de actividad</h5>
-                    <p>09/07/2018</p>
-                    <p>09:00 AM a 13:00 PM</p>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Código de Vestimenta:</p>
-                        <p>Formal</p>
-                    </div>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Costo:</p>
-                        <p>$499 P/P</p>
-                    </div>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Edad Mínima:</p>
-                        <p>2 años</p>
-                    </div>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Tipo de Actividad:</p>
-                        <p>Si</p>
+                    <div class="col-xs-12 col-md-3 hotelDescription">
+                        <p>Sede</p>
+                        <div class="col-xs-4 nopadding hidden-xs">
+                            <img src="../../assets/img/ImgHotel.png" alt="">
+                        </div>
+                        <div class="col-xs-8 nopadding">
+                            <h5>Hard Rock</h5>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <p>Cancun, Q. Roo</p>
+                        </div>
+                        <div class="col-xs-12 nopadding">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit…</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-4 activityInfo">
-                    <p>Descripcion</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                    <p>Recomendaciones</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                    <p>Observaciones</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                </div>
-                <div class="col-xs-4 col-md-3 hotelDescription">
-                    <p>Sede</p>
-                    <div class="col-xs-4 nopadding hidden-xs">
-                        <img src="../../assets/img/ImgHotel.png" alt="">
-                    </div>
-                    <div class="col-xs-8 nopadding">
-                        <h5>Hard Rock</h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <p>Cancun, Q. Roo</p>
-                    </div>
-                    <div class="col-xs-12 nopadding">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit…</p>
-                    </div>
-                </div>
-            </div>
-
-
-               <div class="col-xs-12 date">
-                <div>
-                    <p>9</p>
-                    <p>JUL</p>
-                </div>
-            </div> 
-            <div class="col-xs-12 col-md-10 col-md-offset-1 crogramActivity">
-                <div class="col-xs-2 hidden-xs nopadding">
-                    <img src="../../assets/img/crograma1.png" alt="">
-                </div>
-                <div class="col-xs-4 col-md-3 activityData">
-                    <p>Actividad</p>
-                    <h5>Titulo de actividad</h5>
-                    <p>09/07/2018</p>
-                    <p>09:00 AM a 13:00 PM</p>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Código de Vestimenta:</p>
-                        <p>Formal</p>
-                    </div>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Costo:</p>
-                        <p>$499 P/P</p>
-                    </div>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Edad Mínima:</p>
-                        <p>2 años</p>
-                    </div>
-                    <div class="col-xs-12 col-md-6 nopadding">
-                        <p>Tipo de Actividad:</p>
-                        <p>Si</p>
-                    </div>
-                </div>
-                <div class="col-xs-4 activityInfo">
-                    <p>Descripcion</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                    <p>Recomendaciones</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                    <p>Observaciones</p>
-                    <p>Integer tristique turpis nec pharetra accumsan. Aliquam eu nibh nec massa semper pretium.</p>
-                </div>
-                <div class="col-xs-4 col-md-3 hotelDescription">
-                    <p>Sede</p>
-                    <div class="col-xs-4 nopadding hidden-xs">
-                        <img src="../../assets/img/ImgHotel.png" alt="">
-                    </div>
-                    <div class="col-xs-8 nopadding">
-                        <h5>Hard Rock</h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <p>Cancun, Q. Roo</p>
-                    </div>
-                    <div class="col-xs-12 nopadding">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pretium mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit…</p>
-                    </div>
-                </div>
-            </div>
+            </div>     
         </div>
     </div>             
 </template>
 
 
 <script>
+import moment from 'moment';
+moment.locale('es');
 export default {
     name:"programaModal",
     props:{
-        showModal:Boolean
+        showModal:Boolean,
+        cronograma : {
+            type : Object,
+            default : null
+        }
+    },
+    mounted() {
+        console.log(this.cronograma);
     },
     methods: {
         close(){
             this.showModal = false;
             this.$emit('closeModal', false)
+        },
+
+        getDay(date){
+            let formDate = moment(date);
+            moment.locale();
+            return formDate.format('DD');
+        },
+
+        getMonth(date){
+            let formDate = moment(date);
+            moment.locale();
+            return formDate.format('MMM');
+        },
+        getDateFormat(date){
+            let formDate = moment(date);
+            moment.locale();
+            return formDate.format('L');
         }
     },
 }

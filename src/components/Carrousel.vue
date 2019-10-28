@@ -1,12 +1,12 @@
 <template>
      <slick :options="slickOptions">
-        <div class="col-xs-12 col-md-6 event animationEventsBox" v-for="(featuredEvent, index) in events" :key="index">
-            <router-link :to="'event/'+index">
-                <img :src="featuredEvent.img1 ? 'https://www.youandmeplanners.com/'+featuredEvent.img1 : require('@/assets/img/events/ImgDestacado1.png')" alt="Evento Destacado 4">
+        <div class="col-xs-12 col-md-3 event animationEventsBox" v-for="(featuredEvent, index) in events" :key="index">
+            <router-link :to="'event/'+featuredEvent.idEvent">
+                <img :src="featuredEvent.imgCover ? featuredEvent.imgCover : require('@/assets/img/events/ImgDestacado1.png')" alt="Evento Destacado 4">
             </router-link>
             <div class="col-xs-12 eventDescription">
-                <p class="colorGreen">{{featuredEvent.date}}</p>
-                <p>{{featuredEvent.eventName}}</p>
+                <p class="colorGreen">{{featuredEvent.eventDate}}</p>
+                <p>{{featuredEvent.nameFemale}}{{featuredEvent.nameMale}}</p>
                 <p class="colorGray">Desde ${{featuredEvent.price}} por persona</p>
                 <span class="colorGray"><img src="@/assets/img/events/iconPinMap.svg" alt="Evento Listo Location">{{featuredEvent.location}}</span>
             </div>
@@ -83,7 +83,7 @@ div:focus{
 }
 
 .event:hover{
-    width: calc(100% + 10px) !important;
+    width: calc(100% + 50px) !important;
 }
 
 .animationEventsBox{
@@ -94,6 +94,7 @@ div:focus{
 .event > a > img{
     width: 100%;
     height: 345px;
+    border-radius: 10px 10px 0px 0px;
 }
 
 .circleEvents{
@@ -105,6 +106,7 @@ div:focus{
 
 .event{
     margin: 20px 0px;
+    max-width: 345px;
 }
 
 

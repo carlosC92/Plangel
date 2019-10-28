@@ -45,7 +45,7 @@
                 <tbody>
                     <tr v-for="(invitado,index) in invitados" :key="index">
                         <td data-label="Nombre">{{invitado.name}}</td>
-                        <td data-label="Celular">999 123 6547</td>
+                        <td data-label="Celular">{{invitado.phone}}</td>
                         <td data-label="Mail">{{invitado.email}}</td>
                         <td data-label="Observaciones">{{invitado.observations}}</td>
                         <td data-label="Proximo Contacto">25/JUN/2018</td>
@@ -75,9 +75,9 @@
                 </tbody>
             </table>
         </div> 
-         <modal v-model="editarInvitado" :footer="false">
-                <editarInvitado :user = "selectedUser"/>
-          </modal>  
+        <modal v-model="editarInvitado" :footer="false">
+            <editarInvitado :user = "selectedUser"/>
+        </modal>  
     </div>
 
 </template>
@@ -86,35 +86,33 @@
 import editarInvitado from '@/components/modals/agregarInvitadoModal.vue';
 import axios from 'axios';
 export default {
-  name:'ListaInvitados',
+    name:'ListaInvitados',
     components:{
         editarInvitado
     },
-  data() {
-    return {
-      invitados : {},
-      editarInvitado : false,
-      selectedUser : null,
-      
-    }
-  },
-  created() {
-    axios.get('http://api.plangel.com/event/1/guest')
-    .then(response => {
-        this.invitados = response.data.data;
-    })
-    .catch(error => {
-        console.log(error)
-    })
-  },
+    data() {
+        return {
+            invitados : {},
+            editarInvitado : false,
+            selectedUser : null, 
+        }
+    },
+    created() {
+        axios.get('http://api.plangel.com/event/29/guest')
+        .then(response => {
+            this.invitados = response.data.data;
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },
 
-  methods: {
-    editarGuest(user){
-      this.editarInvitado = !this.editarInvitado
-      this.selectedUser = user;
-    }
-  },
-    
+    methods: {
+        editarGuest(user){
+            this.editarInvitado = !this.editarInvitado
+            this.selectedUser = user;
+        }
+    },
 }
 </script>
 

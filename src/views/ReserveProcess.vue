@@ -1,27 +1,36 @@
 <template>
 <div class="reserveProcess col-xs-12">
     <NavBar/>
+    <Loader :loader = loader></Loader>
     <BarProgress :steps="steps" :actual_step ="actual_step"/>
-    <component class="margin_bottom" :dataReserveProcess="dataReservaProcess" :is="currentStepComponent" :changinStep="changinStep" v-on:validateForm="updateValidation($event)" />
-    <div class="col-xs-12 col-md-6 col-md-offset-3 buttonsContainer">
+    <component class="margin_bottom" :loader="loader" :dataReserveProcess="dataReservaProcess" :is="currentStepComponent" :changinStep="changinStep" @loading ="changeLoader($event)" v-on:validateForm="updateValidation($event)" />
+    <div class="col-xs-12 col-md-6 col-md-offset-3 buttonsContainer" style="margin-bottom: 20px">
         <div class="col-xs-12 col-md-6">
             <button type="button" @click="prevStep" class="btnBack">REGRESAR</button>
         </div>    
         <div class="col-xs-12 col-md-6">
-            <button type="button" @click="nextStep" class="btnEnviar">CONTINUAR</button>
+            <button type="button" v-if="currentStepComponent != 'CheckOut'" @click="nextStep" class="btnEnviar">CONTINUAR</button>
+            <button type="button" v-else @click="modalPago=true" role="button" class="btnEnviar">CONTINUAR</button>
         </div>                
-    </div>   
+    </div> 
+
+    <modal v-model="modalPago"  size="lg" :footer="false">
+        <ModalPago :dataReserveProcess="dataReservaProcess" />      
+    </modal>  
 </div>
+
 
 </template>
 
 
 <script>
+import Loader from '@/components/Loader.vue'
 import NavBar from '@/components/NavBar.vue'
 import BarProgress from '@/components/BarProgress.vue'
 import ContactInformation from '@/components/ContactInformation.vue'
 import Ticket from '@/components/Ticket.vue'
 import CheckOut from '@/components/CheckOut.vue'
+import ModalPago from '@/components/modals/pagoModal.vue';
 export default {
     name: 'ReserveProcess',
     components:{
@@ -29,11 +38,14 @@ export default {
         BarProgress,
         ContactInformation,
         Ticket,
-        CheckOut
+        CheckOut,
+        ModalPago,
+        Loader
 
     },
     data() {
         return {
+            modalPago : false,
             steps:[
                 {'name': 'Datos de contacto'},
                 {'name': 'Pase'},
@@ -45,7 +57,8 @@ export default {
 
             },
             changeStep : false,
-            changinStep : null
+            changinStep : null,
+            loader : null,
         }
     },
 
@@ -85,6 +98,9 @@ export default {
         updateValidation:function(response){
             this.changeStep = response.passValidation
             this.changinStep = false
+        },
+        changeLoader:function(status){
+            this.loader = status;
         }
     },
 

@@ -93,7 +93,6 @@ export default {
     padding: 0px;
     height: 30vh;
     min-height: 200px;
-
 }
 
 

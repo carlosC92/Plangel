@@ -2,7 +2,7 @@
      <div class="col-xs-10 col-xs-offset-1 nopadding">
         <h4>Asistentes</h4>
 
-        <div class="col-xs-9 no-padding-left">
+       <!--  <div class="col-xs-9 no-padding-left">
             <div class="col-xs-12 newGuestsContainer">
                 <h5>Nuevos Reserva</h5>
                 <div class="col-xs-4 upload-btn-wrapper no-padding-left">
@@ -20,7 +20,7 @@
                     <button class="btn btnGreen">Agregar</button>
                 </div>
             </div>       
-        </div>
+        </div> -->
         
         <div class="col-xs-12 nopadding listGuests">
             <div class="col-xs-12 header nopadding">
@@ -67,68 +67,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td data-label="Nombre">José David Mendoza Domínguez</td>
-                            <td data-label="Tipo">Familiar</td>
-                            <td data-label="Datos del contacto"><a href="#">Ver datos</a></td>
-                            <td data-label="Detalles de reserva"><a href="#">Ver detalles</a></td>
-                            <td data-label="Estado de cuenta"><a href="#">Ver Estado de Cuenta</a></td>
-                            <td data-label="Proximo Contacto">25/JUN/2018</td>
-                            <td>
-                                <dropdown ref="dropdown">
-                                    <btn type="primary" class="btn btnGreen dropdown-toggle dropdown-toggle">Historial<span class="caret"></span></btn>
-                                    <template class="dropdown-menu" slot="dropdown">
-                                        <li><a @click="llamadasHistorialModal=true"  href="#">Llamadas</a></li>
-                                        <li><a @click="emailHistorialModal=true" href="#">Emails</a></li>
-                                        <li><a href="#">SMS</a></li>
-                                    </template>
-                                </dropdown>
-                            </td>
-                            <td>
-                                <dropdown ref="dropdown">
-                                    <btn type="primary" class="btn btnWhite dropdown-toggle dropdown-toggle">Acciones<span class="caret"></span></btn>
-                                    <template class="dropdown-menu" slot="dropdown">
-                                        <li><a href="#">Reservar</a></li>
-                                        <li><a href="#">Editar</a></li>
-                                        <li><a href="#">Contactar Ahora</a></li>
-                                        <li><a href="#">Reenviar Invitacion</a></li>
-                                        <li><a href="#">Reenviar SMS</a></li>
-                                    </template>
-                                </dropdown>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td data-label="Nombre">José David Mendoza Domínguez</td>
-                            <td data-label="Tipo">Familiar</td>
-                            <td data-label="Datos del contacto"><a href="#">Ver datos</a></td>
-                            <td data-label="Detalles de reserva"><a href="#">Ver detalles</a></td>
-                            <td data-label="Estado de cuenta"><a href="#">Ver Estado de Cuenta</a></td>
-                            <td data-label="Proximo Contacto">25/JUN/2018</td>
-                            <td>
-                                <dropdown ref="dropdown">
-                                    <btn type="primary" class="btn btnGreen dropdown-toggle dropdown-toggle">Historial<span class="caret"></span></btn>
-                                    <template class="dropdown-menu" slot="dropdown">
-                                        <li><a @click="llamadasHistorialModal=true"  href="#">Llamadas</a></li>
-                                        <li><a @click="emailHistorialModal=true" href="#">Emails</a></li>
-                                        <li><a href="#">SMS</a></li>
-                                    </template>
-                                </dropdown>
-                            </td>
-                            <td>
-                                <dropdown ref="dropdown">
-                                    <btn type="primary" class="btn btnWhite dropdown-toggle dropdown-toggle">Acciones<span class="caret"></span></btn>
-                                    <template class="dropdown-menu" slot="dropdown">
-                                        <li><a href="#">Reservar</a></li>
-                                        <li><a href="#">Editar</a></li>
-                                        <li><a href="#">Contactar Ahora</a></li>
-                                        <li><a href="#">Reenviar Invitacion</a></li>
-                                        <li><a href="#">Reenviar SMS</a></li>
-                                    </template>
-                                </dropdown>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td data-label="Nombre">José David Mendoza Domínguez</td>
+                         <tr v-for="(assistant,index) in assistants.data" :key="index">
+                            <td data-label="Nombre">{{getFullName(assistant.name,assistant.lastname)}}</td>
                             <td data-label="Tipo">Familiar</td>
                             <td data-label="Datos del contacto"><a href="#">Ver datos</a></td>
                             <td data-label="Detalles de reserva"><a href="#">Ver detalles</a></td>
@@ -139,37 +79,7 @@
                                     <btn type="primary" class="btn btnGreen dropdown-toggle dropdown-toggle">Historial<span class="caret"></span></btn>
                                     <template class="dropdown-menu" slot="dropdown">
                                         <li><a @click="llamadasHistorialModal=true" href="#">Llamadas</a></li>
-                                        <li><a @click="emailHistorialModal=true" href="#">Emails</a></li>
-                                        <li><a href="#">SMS</a></li>
-                                    </template>
-                                </dropdown>
-                            </td>
-                            <td>
-                                <dropdown ref="dropdown">
-                                    <btn type="primary" class="btn btnWhite dropdown-toggle dropdown-toggle">Acciones<span class="caret"></span></btn>
-                                    <template class="dropdown-menu" slot="dropdown">
-                                        <li><a href="#">Reservar</a></li>
-                                        <li><a href="#">Editar</a></li>
-                                        <li><a href="#">Contactar Ahora</a></li>
-                                        <li><a href="#">Reenviar Invitacion</a></li>
-                                        <li><a href="#">Reenviar SMS</a></li>
-                                    </template>
-                                </dropdown>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td data-label="Nombre">José David Mendoza Domínguez</td>
-                            <td data-label="Tipo">Familiar</td>
-                            <td data-label="Datos del contacto"><a href="#">Ver datos</a></td>
-                            <td data-label="Detalles de reserva"><a href="#">Ver detalles</a></td>
-                            <td data-label="Estado de cuenta"><a href="#">Ver Estado de Cuenta</a></td>
-                            <td data-label="Proximo Contacto">25/JUN/2018</td>
-                            <td>
-                                <dropdown ref="dropdown">
-                                    <btn type="primary" class="btn btnGreen dropdown-toggle dropdown-toggle">Historial<span class="caret"></span></btn>
-                                    <template class="dropdown-menu" slot="dropdown">
-                                        <li><a @click="llamadasHistorialModal=true" href="#">Llamadas</a></li>
-                                        <li><a @click="emailHistorialModal=true" href="#">Emails</a></li>
+                                        <li><a @click="showEmailHistory(assistant.idReservation)" href="#">Emails</a></li>
                                         <li><a href="#">SMS</a></li>
                                     </template>
                                 </dropdown>
@@ -210,13 +120,14 @@
         <LlamadasHistorialModal/>
     </modal>  
     <modal v-model="emailHistorialModal" :footer="false">
-        <EmailHistorialModal/>
+        <EmailHistorialModal :id = "idReservation"/>
     </modal> 
     </div>  
 </template>
 
 
 <script>
+import axios from 'axios';
 import ReservacionModal from '@/components/modals/reservacionModal.vue';
 import EmailHistorialModal from '@/components/modals/emailHistorialModal.vue';
 import LlamadasHistorialModal from '@/components/modals/llamadasHistorialModal.vue';
@@ -231,7 +142,35 @@ export default {
         return {
             reservacionModal: false,
             llamadasHistorialModal:false,
-            emailHistorialModal : false
+            emailHistorialModal : false,
+            assistants : null,
+            idReservation : null
+        }
+    },
+
+    async created() {
+        await this.getAssistants()
+        .then( response => {          
+            this.assistants = response.data
+            console.log(response)
+        })
+        .catch( error => {
+            console.log(error)
+        })
+    },
+
+    methods: {
+        getAssistants(){
+            return axios.get('http://api.plangel.com/event/29/reservation');
+        },
+
+        getFullName(name,lastName){
+            return name+' '+lastName
+        },
+
+        showEmailHistory(idReservation){
+            this.idReservation = idReservation;
+            this.emailHistorialModal = true;
         }
     },
 }

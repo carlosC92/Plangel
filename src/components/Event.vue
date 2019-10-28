@@ -1,15 +1,15 @@
 <template>
     <div class="col-xs-12 event nopadding">
         <div class="col-xs-12 nopadding divImgHeader">
-            <img src="@/assets/img/event/ImgDestacada.png" alt="Background Evento Listo">   
+            <img :src="event.imgCover" alt="Background Evento Listo">   
             <div class="col-xs-12 col-md-5">
                 <span class="colorWhite"><img src="@/assets/img/event/iconPinMap.svg" alt="Evento Listo Location"> Cancun, Q.Roo</span>
                 <span class="colorWhite"><img src="@/assets/img/event/iconCategoria.svg" alt="Evento Listo Location"> Simposio</span>
                 <span class="colorWhite"><img src="@/assets/img/event/IconTipoEvento2.svg" alt="Evento Listo Location"> Publico</span>
             </div>
             <div class="col-xs-12 col-md-6 col-lg-6 col-lg-offset-1">
-                <p>5 DE JULIO 2018</p>
-                <h2 class="colorWhite">Symposium on Neurothics of Memory</h2>
+                <p>{{headerDate}}</p>
+                <h2 class="colorWhite">{{event.eventName}}</h2>
                 <button @click="confirmAssist" type="button" class="btnConfirm">CONFIRMAR ASISTENCIA</button>
             </div>              
         </div>
@@ -27,52 +27,13 @@
                         <div class="col-xs-9 pull-right">
                             <div class="col-xs-12">
                                 <p>Del</p>
-                                <p>05/07/2018</p>
+                                <p>{{dateInOut.eventStart}}</p>
                             </div>
                             <div class="col-xs-12">
                                 <p>Al</p>
-                                <p>06/07/2018</p>
+                                <p>{{dateInOut.eventEnd}}</p>
                             </div>
-                        </div>
-                        
-                    </div> 
-                </div> 
-
-                <div class="col-xs-12 col-sm-6 col-md-12">
-                    <div class="col-xs-12 date">
-                        <div class="col-xs-3">
-                            <img src="@/assets/img/event/iconCalendarStar.svg">
-                        </div>
-                        <div class="col-xs-9 pull-right">
-                            <div class="col-xs-12">
-                                <p>Del</p>
-                                <p>05/07/2018</p>
-                            </div>
-                            <div class="col-xs-12">
-                                <p>Al</p>
-                                <p>06/07/2018</p>
-                            </div>
-                        </div>
-                        
-                    </div> 
-                </div> 
-    
-                <div class="col-xs-12 col-sm-6 col-md-12">
-                    <div class="col-xs-12 date">
-                        <div class="col-xs-3">
-                            <img src="@/assets/img/event/iconCalendarStar.svg">
-                        </div>
-                        <div class="col-xs-9 pull-right">
-                            <div class="col-xs-12">
-                                <p>Del</p>
-                                <p>05/07/2018</p>
-                            </div>
-                            <div class="col-xs-12">
-                                <p>Al</p>
-                                <p>06/07/2018</p>
-                            </div>
-                        </div>
-                        
+                        </div>                  
                     </div> 
                 </div> 
             </div>
@@ -80,7 +41,7 @@
         
             
 
-        <div class="col-xs-12 col-md-8 col-md-offset-2 nopadding galeryEvent" >
+        <div class="col-xs-12 col-md-8 col-md-offset-2 nopadding galeryEvent" v-if="event.gallery.lenght > 0" >
             <h4 class="colorGray">Galeria del evento</h4>
             <div class="col-xs-12">
                 <gallery :images="images" :index="index" @close="index = null"></gallery>
@@ -122,121 +83,50 @@
         <div class="col-xs-12 col-md-8 col-md-offset-2">
             <h4 class="colorGray">Actividades del evento</h4>   
             <div class="col-xs-12 nopadding eventActivities">
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-xs-12 col-sm-6" v-for="(element, index) in event.chronology.data" :key="index">
                     <div class="col-xs-12 nopadding eventActivity">
                         <div class="col-xs-5 nopadding">
                             <img src="@/assets/img/event/ImgHotel.png" alt="">
                         </div>
                         <div class="col-xs-7 activityDescription text-center">      
-                            <p>Titulo de actividad</p>
-                            <p>09/07/2018</p> 
+                            <p>{{element.type}}</p>
+                            <p>{{dateFormat(element.date)}}</p> 
                             <p>09:00 AM a 13:00 PM</p>        
                         </div>  
                     </div>
-                </div>                               
-                <div class="col-xs-12 col-sm-6">
-                    <div class="col-xs-12 nopadding eventActivity">
-                        <div class="col-xs-5 nopadding">
-                            <img src="@/assets/img/event/ImgHotel.png" alt="">
-                        </div>
-                        <div class="col-xs-7 activityDescription text-center">      
-                            <p>Titulo de actividad</p>
-                            <p>09/07/2018</p> 
-                            <p>09:00 AM a 13:00 PM</p>        
-                        </div>  
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="col-xs-12 nopadding eventActivity">
-                        <div class="col-xs-5 nopadding">
-                            <img src="@/assets/img/event/ImgHotel.png" alt="">
-                        </div>
-                        <div class="col-xs-7 activityDescription text-center">      
-                            <p>Titulo de actividad</p>
-                            <p>09/07/2018</p> 
-                            <p>09:00 AM a 13:00 PM</p>        
-                        </div>  
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="col-xs-12 nopadding eventActivity">
-                        <div class="col-xs-5 nopadding">
-                            <img src="@/assets/img/event/ImgHotel.png" alt="">
-                        </div>
-                        <div class="col-xs-7 activityDescription text-center">      
-                            <p>Titulo de actividad</p>
-                            <p>09/07/2018</p> 
-                            <p>09:00 AM a 13:00 PM</p>        
-                        </div>  
-                    </div>
-                </div>      
+                </div>                                 
             </div> 
             <button type="button" class="btnCron" @click="modalPrograma=true">Programa</button>  
         </div>      
         <div class="col-xs-12 reservation">
             <img src="@/assets/img/event/LogoHotel1.png" class="logoHotel" alt="">
             <div class="col-xs-12 col-md-8 col-md-offset-2 nopadding">
-                <div class="col-xs-12 col-sm-6 col-md-3 hotelHab">
+                <div class="col-xs-12 col-sm-6 col-md-3 hotelHab" @click="categoryModal=true"  v-for="(element, index) in event.hotel.data.categories.data" :key="index">
                     <img src="@/assets/img/event/ImgDetallesHotel.png" alt="">
                     <div class="col-xs-12 hotelDescription">
-                        <p>TODO INCLUIDO</p>
-                        <p>$3,900 MXN</p>
+                        <p>{{element.type}}</p>
+                        <p>${{element.occupation.data[0].price}} MXN</p>
                         <p>Precio por persona por noche</p>
                     </div>
                 </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3 hotelHab">
-                    <img src="@/assets/img/event/ImgDetallesHotel.png" alt="">
-                    <div class="col-xs-12 hotelDescription">
-                        <p>CATEGORÍA 1</p>
-                        <p>$2,900 MXN</p>
-                        <p>Precio por persona por noche</p>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3 hotelHab">
-                    <img src="@/assets/img/event/ImgDetallesHotel.png" alt="">
-                    <div class="col-xs-12 hotelDescription">
-                        <p>CATEGORÍA 2</p>
-                        <p>$2,500 MXN</p>
-                        <p>Precio por persona por noche</p>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3 hotelHab">
-                    <img src="@/assets/img/event/ImgDetallesHotel.png" alt="">
-                    <div class="col-xs-12 hotelDescription">
-                        <p>CATEGORÍA 3</p>
-                        <p>$1,800 MXN</p>
-                        <p>Precio por persona por noche</p>
-                    </div>
-                </div>
-
             </div>
     
-            <button class="btnEnviar">RESERVAR</button>
+            <button class="btnEnviar" @click="confirmAssist">RESERVAR</button>
     
         </div> 
-        <div class="col-xs-12 text-center sponsorsContainer nopadding">
+        <div class="col-xs-12 text-center sponsorsContainer nopadding" v-if="event.sponsor.data.length > 0">
             <h4 class="colorGray">Patrocinadores</h4>
             <div class="col-xs-12 col-md-10 col-md-offset-1 sponsors nopadding">
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel1.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel2.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel3.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel4.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel1.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel2.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel3.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel4.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel1.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel2.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel3.png" alt=""></div>
-                <div class="col-xs-6 col-sm-4 col-md-2"><img src="@/assets/img/event/LogoHotel4.png" alt=""></div>
+                <div v-for="(item, index) in event.sponsor.data" :key="index" class="col-xs-6 col-sm-4 col-md-2"><img :src="item.image" alt=""></div>
             </div>
         </div>
 
-         <modal v-model="modalPrograma" size="xlg" :footer="false">
-           <programaModal/>
+        <modal v-model="modalPrograma" size="xlg" :footer="false">
+           <programaModal :cronograma="event.chronology"/>
+        </modal>
+
+        <modal v-model="categoryModal" size="lg" :header="false" :footer="false">
+           <categoryModal/>
         </modal>
         
     </div>
@@ -246,15 +136,37 @@
 <script>
  import VueGallery from 'vue-gallery';
 import programaModal from './modals/programaModal.vue'
+import categoryModal from './modals/categoryModal.vue'
+import moment from 'moment';
+import axios from 'axios';
 export default {
     name:'Event',
     components:{
         programaModal,
+        categoryModal,
         'gallery': VueGallery
+    },
+    computed: {
+        headerDate(){
+            let formDate = moment(this.event.eventDate,'YYYY-MM-DD');
+            moment.locale();
+            return formDate.format('LL');
+        },
+        dateInOut(){
+            let eventStart = moment(this.event.dateIn,'YYYY-MM-DD');
+            let eventEnd = moment(this.event.dateOut,'YYYY-MM-DD');
+            moment.locale();
+            return {
+                eventStart : eventStart.format('L'),
+                eventEnd :  eventEnd.format('L')
+            }
+        },
+      
     },
     data() {
         return {
             index: null,
+            event : null,
             images:[
                 require("../assets/img/event/ImgGaleria1.png"),
         
@@ -271,14 +183,37 @@ export default {
                 require("../assets/img/event/ImgDestacada.png"),
              
             ],
-            modalPrograma : false
+            modalPrograma : false,
+            categoryModal : false,
         }
     },
+     mounted() {
+        this.getEventData();
+    },
     methods: {
+        dateFormat(date){
+            let dateFormat =  moment(date,'YYYY-MM-DD');
+            moment.locale();
+            return dateFormat.format('L')
+        },
         confirmAssist(e){
             e.preventDefault()
-            this.$router.push('/reserveProcess')
+            this.$router.push({
+                name : 'reserveProcess', 
+                params : {id_event : this.$route.params.id}
+            })
         },
+        async getEventData(){
+           await axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id)
+            .then(response => {
+                this.event = response.data.data;
+                console.log(response.data.data)
+                
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
     },
 }
 </script>
@@ -401,7 +336,7 @@ export default {
 .arrows li:nth-of-type(4) a { color: hsl(0, 0%, 45%); } 
 
 
-.event > *+*{
+.event > div:not(:first-of-type){
     margin-top: 40px;
 }
 .event p{
@@ -417,8 +352,13 @@ export default {
     line-height: 100px;
 }
 
-.sponsors > div > div img{
-    width: 100%;
+.sponsors > div{
+    margin-top: 10px;
+}
+
+.sponsors > div img{
+    width: 168px;
+    height: 107px
 }
 
 .speakers{
@@ -512,7 +452,7 @@ h4{
     font-family: GothamBold;
     color: #1b95cb;
     text-align: left ;
-    font-size: 30px;
+    font-size: 25px;
     letter-spacing: 2px;
   }
 

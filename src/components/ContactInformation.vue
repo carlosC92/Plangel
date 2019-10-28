@@ -10,8 +10,8 @@
         <div class="form-group col-xs-12">
             <span>{{errors.first('apellido')}}</span>
             <label for="apellido">Apellido</label>
-            <input v-if="contact_data" v-model="contact_data.second_name" v-validate ="'required'" name="apellido" type="text" class="form-control">
-            <input v-else v-model="second_name" v-validate ="'required'" name="apellido" type="text" class="form-control">
+            <input v-if="contact_data" v-model="contact_data.lastname" v-validate ="'required'" name="apellido" type="text" class="form-control">
+            <input v-else v-model="lastname" v-validate ="'required'" name="apellido" type="text" class="form-control">
         </div>
         <div class="form-group col-xs-12">
             <span>{{errors.first('email')}}</span>
@@ -22,8 +22,8 @@
         <div class="form-group col-xs-12">
             <span>{{errors.first('celular')}}</span>
             <label for="estate">Celular</label>
-            <vue-tel-input v-if="contact_data" v-model="contact_data.cel" v-validate = "'required'" name="celular"></vue-tel-input>
-            <vue-tel-input @onInput="hola()" v-else v-model="cel" v-validate = "'required'" name="celular" type="numeric"></vue-tel-input>
+            <vue-tel-input v-bind="inputTelProps" v-if="contact_data" v-model="contact_data.phone" v-validate = "'required'" name="celular"></vue-tel-input>
+            <vue-tel-input v-bind="inputTelProps" v-else v-model="phone" v-validate = "'required'" name="celular" type="numeric"></vue-tel-input>
 
         </div>
         </form>
@@ -45,16 +45,20 @@ export default {
     data() {
         return {
             name : null,
-            second_name : null,
+            lastname : null,
             email : null,
             cel : null,
             validated : false,
+            inputTelProps : {
+                defaultCountry: "MX",
+                placeholder: "Introduzca su numero",
+            }
         }
     },
 
     computed: {
         contact_data(){
-            return this.dataReserveProcess.contact_data
+            return this.dataReserveProcess
         }
     },
 
@@ -65,17 +69,21 @@ export default {
         },
         validated :function(){
             if(!this.errors.items.length){
-                if(!this.dataReserveProcess.contact_data){
-                    this.dataReserveProcess.contact_data = {
+                if(!this.dataReserveProcess){
+                    this.dataReserveProcess = {
                         name:this.name,
-                        second_name: this.second_name,
+                        lastname: this.lastname,
                         email: this.email,
-                        cel: this.cel  
+                        phone: this.phone ,
+                        idUser : 0,
+                        idevent : this.$route.params.id_event,
+                        payments : {},
+                        rooms : {}
                     }
                 }
                 
                             
-                this.$emit('validateForm',{'passValidation':true, 'data':this.dataReserveProcess.contact_data}); 
+                this.$emit('validateForm',{'passValidation':true, 'data':this.dataReserveProcess}); 
                   
             }else{
                 this.$emit('validateForm',false)  
@@ -91,12 +99,7 @@ export default {
                 }).catch(() => {
                 });   
             }
-        },
-        hola(){
-         console.log('hola')
         }
-
-
 }
 </script>
 

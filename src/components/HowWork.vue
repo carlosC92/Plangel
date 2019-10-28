@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="col-xs-8 col-xs-offset-2">
-                <a  class="button" href="#">COMENZAR</a>
+                <router-link to="/contactUs" class="button">COMENZAR</router-link>
             </div>           
         </div>
             <img src="../assets/img/how_work/Circulos4.png" class="circle circleDiv hidden-xs" alt="Circulos Evento Listo">

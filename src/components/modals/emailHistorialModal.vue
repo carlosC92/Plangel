@@ -1,8 +1,9 @@
 <template>
 <div class="container-fluid nopadding myPayments">
     <h4 class="text-center">Historial Emails</h4>
-    <div class="col-xs-12 text-center">        
-        <table>
+    <div class="col-xs-12 text-center">     
+        <h2 v-if="emails.length == 0" class="form-control">Sin emails</h2>
+        <table v-else>
             <tr>
                 <th>Tipo</th>
                 <th>Fecha</th>
@@ -31,8 +32,38 @@
 
 
 <script>
+import axios from 'axios';
 export default {
-    name:'emailHistorialModal'
+    name:'emailHistorialModal',
+    props :{
+        id : {
+            type : Number,
+            default : null,
+            required : false
+        }
+    },
+    data() {
+        return {
+            emails : {}
+        }
+    },
+    watch: {
+        async id(){
+            await this.getEmails()
+                .then( response => {
+                    this.emails = response.data.data;
+                    console.log(response);
+                })
+                .catch( error => {
+                    console.log(error);
+                })
+        }
+    },
+    methods: {
+        getEmails(){
+            return axios.get('http://api.plangel.com/reservation/'+this.id+'/emailHistory')
+        }
+    },
 }
 </script>
 

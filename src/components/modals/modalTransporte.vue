@@ -21,63 +21,89 @@
             <div class="col-xs-12">
                 <div class="form-group col-xs-12">
                     <label for="name">Nombre del titular</label>
-                    <input type="text" class="form-control">
+                    <input v-model="name" type="text" class="form-control">
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Correo Electrónico</label>
-                    <input type="text" class="form-control">
+                    <input v-model="email" type="email" class="form-control">
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Celular</label>
-                    <input type="text" class="form-control">
+                    <input v-model="phone" type="number" class="form-control">
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Num. Adultos</label>
-                    <input type="text" class="form-control">
+                    <input v-model="adults" type="number" class="form-control">
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Num. Menores</label>
-                    <input type="text" class="form-control">
+                    <input v-model="minors" type="number" class="form-control">
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Fecha de ida</label>
-                    <date-picker v-model="date1" :lang="lang"></date-picker>
+                    <date-picker v-model="dateIn" :lang="lang"></date-picker>
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Fecha de vuelta</label>
-                     <date-picker v-model="date2" :lang="lang"></date-picker>
+                     <date-picker v-model="dateOut" :lang="lang"></date-picker>
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Origen</label>
-                    <input type="text" class="form-control">
+                    <input v-model="origin" type="text" class="form-control">
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="name">Destino</label>
-                    <input type="text" class="form-control">
+                    <input v-model="destination" type="text" class="form-control">
                 </div>
             </div>
         </div>
-        <button data-dismiss="modal" data-toggle="modal" data-target="#generatePay" class="btnEnviar">Solicitar</button>
+        <button @click="requestTransportation()" class="btnEnviar">Solicitar</button>
     </div>
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
+import DatePicker from 'vue2-datepicker';
+import axios from 'axios';
 export default {
     components: { DatePicker },
     data() {
         return {
-            date1: '',
-            date2: '',
-              lang: {
-        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
-        placeholder: {
-          date: 'Select Date',
-          dateRange: 'Select Date Range'
+            name : null,
+            email : null,
+            phone : null,
+            adults : 0,
+            minors : 0,
+            origin : null,
+            destination : null,
+            dateIn: '',
+            dateOut: '',
+            lang: {
+                days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                pickers: ['next 7 days', 'next 30 days', 'previous 7 days', 'previous 30 days'],
+                placeholder: {
+                date: 'Seleccione una fecha',
+                dateRange: 'Select Date Range'
+                }
+            },
         }
-      },
+    },
+    methods: {
+        async requestTransportation(){
+           await axios.post('http://apiplan.smuffi.pet/transport',{
+                idReservation : this.$route.id_reservation,
+                name : this.name,
+                phone : this.phone,
+                email : this.email,
+                children : this.minors,
+                dateIn : this.dateIn,
+                dateOut : this.dateOut
+            }).then( response => {
+                this.$emit('requetTransportationSuccess');
+            })
+            .catch( error => {
+                console.log(error);
+            })
         }
     },
 }

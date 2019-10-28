@@ -5,33 +5,21 @@
             <h2>Check Out</h2>
             <p>Titular</p>
             <p>{{fullName}}</p>
-            <p>{{dataReserveProcess.contact_data.cel}}</p>
-            <p>{{dataReserveProcess.contact_data.email}}</p>
-            <!-- <div class="col-xs-6 nopadding">
-                <p>Hotel</p>
-                <p>Barcelo Maya Grand Resort</p>
-            </div>
-            <div class="col-xs-6">
-                <p>Evento</p>
-                <p>Boda Alan y Paulina</p>
-            </div> -->
+            <p>{{dataReserveProcess.cel}}</p>
+            <p>{{dataReserveProcess.email}}</p>
         </div>
         <div class="col-xs-12 col-sm-5 col-md-4 statement">
             <h4>Estado de cuenta</h4>
             <div class="col-xs-12 dataStatement">
                 <div class="col-xs-12 bedrooms">
-                    <div v-for="(ticket, index) in dataReserveProcess.ticket_data.assistant_list" :key="index" class="col-xs-12 nopadding">
+                    <div v-for="(ticket, index) in dataReserveProcess.rooms" :key="index" class="col-xs-12 nopadding">
                         <span>Ticket {{index+1}}</span>
-                        <span class="pull-right">${{dataReserveProcess.ticket_data.ticket_price}}</span>
+                        <span class="pull-right">${{ticket.ticket_price}}</span>
                     </div>          
                 </div>
                 <div class="col-xs-12 pull-right">
                     <p>Total reserva</p>
                     <p>${{totalReservation}}</p>
-                    <!-- <p>Total abonado</p>
-                    <p>$2,500 MXN</p>
-                    <p>Saldo</p>
-                    <p>$5,400 MXN</p> -->
                 </div>
             </div>
         </div>
@@ -39,7 +27,7 @@
         <div class="col-xs-12 toPay">
             <div class="col-xs-12 col-md-6 nopadding info">
                 <div class="col-xs-4 text-center">
-                    <p>{{dataReserveProcess.ticket_data.assistants}} Event Pass</p>
+                    <p>{{dataReserveProcess.assistants}} Event Pass</p>
                     <p>${{totalReservation}}</p>
                 </div>
                 <div class="col-xs-4 text-center">
@@ -72,7 +60,7 @@
                 <div class="col-xs-6 col-md-12 nopadding">
                     <p>Acompañantes</p>
                     <ul>
-                        <li v-for="(assistant, index) in dataReserveProcess.ticket_data.assistant_list" :key="index">{{assistant}}</li>
+                        <li v-for="(assistant, index) in dataReserveProcess.rooms" :key="index">{{assistant.name}}</li>
                     </ul>
                 </div>
               <!--   <div class="col-xs-6">
@@ -175,9 +163,10 @@
 
 
 <script>
+
 export default {
     name:'CheckOut',
-     props:{
+    props:{
         dataReserveProcess :{
             type : Object,
             default : null
@@ -185,11 +174,11 @@ export default {
     },
     computed: {
         fullName(){
-            return this.dataReserveProcess.contact_data.name + ' ' + this.dataReserveProcess.contact_data.second_name
+            return this.dataReserveProcess.name + ' ' + this.dataReserveProcess.lastname
         },
 
         totalReservation(){
-            return this.dataReserveProcess.ticket_data.ticket_price * this.dataReserveProcess.ticket_data.assistants
+            return this.dataReserveProcess.payments.mount
         }
     },
 }

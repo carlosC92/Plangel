@@ -42,6 +42,14 @@ export default {
 	src: url("./assets/fonts/GothamMedium.ttf") format("opentype");
 }
 
+.color-red{
+    color:red;
+}
+
+.d-flex{
+    display: flex !important;
+}
+
 input:not([type=checkbox]),.form-group select{
     height: 55px;
     background-color: #e9eef3;
@@ -71,8 +79,28 @@ body{
     min-height: 100%;
     height: 100%;
 }
+
+.m-t-15{
+    margin-top: 15px;
+}
+
+.m-b-15{
+    margin-bottom: 15px;
+}
 .nopadding{
   padding: 0px !important;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.h-100{
+    height: 100%;
+}
+
+.justify-content-betwen{
+    justify-content: space-between;
 }
 
 .colorGreen{

@@ -17,7 +17,7 @@ import CuentaMaestra from '@/views/admin/CuentaMaestra.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -46,7 +46,7 @@ export default new Router({
       component: ContactUs
     },
     {
-      path: '/reserveProcess',
+      path: ':id_event/reserveProcess',
       name: 'reserveProcess',
       component: ReserveProcess
     },
@@ -61,7 +61,7 @@ export default new Router({
       component: Register
     },
     {
-      path: '/adminReservation',
+      path: '/:id_event/adminReservation/:id_reservation',
       name: 'adminReservation',
       component: AdminReservation
     },
