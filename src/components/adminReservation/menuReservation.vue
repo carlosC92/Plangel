@@ -5,7 +5,7 @@
             <modalTransporte v-on:requetTransportationSuccess="handleTransportationSuccess()"/>
         </modal>  
         <modal v-model="modalSolicitarLlamada" :footer="false">
-            <solicitarLlamadaModal/>
+            <solicitarLlamadaModal v-on:requestCallSuccess="handleAskCallSuccess()"/>
         </modal>  
         <vue-snotify></vue-snotify>
         <Loader :loader = loader></Loader>
@@ -38,7 +38,7 @@
                 <input v-if="reservation_info" v-model="reservation_info.email" type="estate" class="form-control backgroundGray" id="estate" readonly>
             </div>
             <div class="col-xs-12 nopadding text-right">
-                <span>Clave de reservación:</span><span>RP414124</span>
+                <span>Clave de reservación:</span><span>{{reservation_info.key}}</span>
             </div>
         
         </div>
@@ -73,7 +73,7 @@
                 <div class="col-xs-2 options pull-right nopadding">
                     <img src="@/assets/img/iconPrint.svg" alt="">    
                     <img src="@/assets/img/iconEdit.svg" alt="">
-                    <img src="@/assets/img/iconClose.svg" alt="">
+                    <img @click="deleteReservationRoom(room.idRoom)" src="@/assets/img/iconClose.svg" alt="">
                 </div>
                 <h5>Detalles:</h5>
                 <div class="col-xs-12 nopadding eventPrice">
@@ -175,7 +175,9 @@ export default {
                     data : null
                 }
             },
-            payments : {},
+            payments : {
+                data:[]
+            },
             loader : null,
             event : {},
             total : 0,
@@ -213,8 +215,8 @@ export default {
 
          total_payment(){
             let total = 0;
-            if(this.payments != null && this.payments.lenght > 0){
-                this.payments.forEach(payment => {
+            if(this.payments != null && this.payments.data.length > 0){
+                this.payments.data.forEach(payment => {
                     total += payment.amount
                 });
             }
@@ -257,6 +259,15 @@ export default {
         handleTransportationSuccess : function(){
             this.modalTransporte = false;
             this.$snotify.success('Nos pondremos en contacto a la brevedad posible','Solicitud exitosa', {
+                timeout: 2500,
+                showProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true
+            });
+        },
+        handleAskCallSuccess : function(){
+            this.solicitarLlamadaModal = false;
+            this.$snotify.error('Horario de llamada no disponible','Error', {
                 timeout: 2500,
                 showProgressBar: false,
                 closeOnClick: false,
@@ -313,7 +324,7 @@ export default {
         },
 
         getPayments: function (){
-            return axios.get('event/'+this.$route.params.id_event+'/reservation/'+this.$route.params.id_reservation,{
+            return axios.get('reservation/'+this.$route.params.id_reservation+'/payments',{
                 params: {
                     status : 'Pagado'
                 }
@@ -325,6 +336,25 @@ export default {
                 console.log(error)
             });
             
+        },
+
+        async deleteReservationRoom(id_room){
+            this.loader = true;
+            await axios.delete('reservation/'+this.$route.params.id_reservation+'/room/'+id_room)
+            .then( async response => {
+                this.loader = false;
+                    await this.getReservationInfo();
+                this.$snotify.success('El ticket se elimino exitosamente','Ticket eliminado', {
+                timeout: 2500,
+                showProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true
+            });
+            })
+            .catch( error => {
+                this.loader = false;
+                console.log(error)
+            });
         }
        
    },

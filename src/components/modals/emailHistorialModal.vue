@@ -36,8 +36,8 @@ import axios from 'axios';
 export default {
     name:'emailHistorialModal',
     props :{
-        id : {
-            type : Number,
+        user : {
+            type : Object,
             default : null,
             required : false
         }
@@ -48,7 +48,7 @@ export default {
         }
     },
     watch: {
-        async id(){
+        async user(){
             await this.getEmails()
                 .then( response => {
                     this.emails = response.data.data;
@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         getEmails(){
-            return axios.get('http://api.plangel.com/reservation/'+this.id+'/emailHistory')
+            return axios.get('http://apiplan.smuffi.pet/guest/'+this.user.idGuests+'/emailHistory')
         }
     },
 }

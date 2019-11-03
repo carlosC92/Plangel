@@ -1,7 +1,18 @@
 <template>
     <div class="container-fluid nopadding">
         <h4 class="text-center">Metodos de pago</h4>
-        <div class="col-xs-12 generarAbono">       
+        <div class="col-xs-12 generarAbono">  
+            <div class="form-group col-xs-12" :class="[dataReserveProcess.payment_type != 'Tarjeta' ? 'd-none' : '']">
+                <label for="card-element">
+                Tarjeta de credito o debito
+                </label>
+                <div id="card-element">
+                <!-- A Stripe Element will be inserted here. -->
+                </div>
+
+                <!-- Used to display form errors. -->
+                <div id="card-errors" role="alert"></div>
+            </div>     
             <div class="col-xs-12 paymentOptions nopadding">
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-8 containerCheckbox">
@@ -48,7 +59,7 @@
                 </div>
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-8 containerCheckbox">
-                        <p-radio value= "Tarjeta" v-model="dataReserveProcess.payment_type" class="pretty p-image p-plain" name="checkbox1">
+                        <p-radio value= "Virtual" v-model="dataReserveProcess.payment_type" class="pretty p-image p-plain" name="checkbox1">
                             <img class="image" src="../../assets/img/Checkin.png">
                             Tarjetas de Crédito/Débito emitidas en México.
                         </p-radio>
@@ -63,7 +74,7 @@
 
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-8 containerCheckbox">
-                        <p-radio value= "4" v-model="dataReserveProcess.payment_type" class="pretty p-image p-plain" name="checkbox1">
+                        <p-radio value= "Tienda" v-model="dataReserveProcess.payment_type" class="pretty p-image p-plain" name="checkbox1">
                             <img class="image" src="../../assets/img/Checkin.png">
                             Pago en autoservicio(7 eleven,Farmacias del ahorro,extra).
                         </p-radio>
@@ -112,6 +123,23 @@
 </template>
 <script>
 import axios from 'axios';
+var stripe = Stripe('pk_test_SmiUVwWeN1V2C5JBpDoBljE4');
+var elements = stripe.elements();
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
 export default {
     name:'pagoModal',
     data() {
@@ -125,14 +153,16 @@ export default {
             default : null
         } 
     },
+
+    mounted() {
+        this.drawStripeForm(); 
+        this.handleStripeForm() 
+    },
     methods: {
-        showData(){
-            this.dataReserveProcess.payments.payment_type = this.payment_type
-            axios({
-                method : 'post',
-                url : 'http://apiplan.smuffi.pet/event/'+ this.$route.params.id_event+'/frontendReservation',
-                data : {
-                    idEvent : this.$route.params.id_event,
+        async showData(){
+            this.dataReserveProcess.payments.payment_type = this.payment_type;
+            let data = {
+                idEvent : this.$route.params.id_event,
                     name : this.dataReserveProcess.name,
                     lastname : this.dataReserveProcess.lastname,
                     email : this.dataReserveProcess.email,
@@ -149,16 +179,48 @@ export default {
                     ],
                     payment : {
                         paymentType : this.dataReserveProcess.payment_type,
-                        amount : 2000
-                        
+                        amount : 2000                    
                     }
-                }
+            }
+             if(this.payment_type == 'Tarjeta' || this.payment_type == 'Suscripcion'){
+                await this.createTokenStripe()
+                .then(function(result) {
+                    if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                    } else {
+                    data.tokenStripe = result.token
+                    }
+                });
+            }
+            axios({
+                method : 'post',
+                url : 'http://apiplan.smuffi.pet/event/'+ this.$route.params.id_event+'/frontendReservation',
+                data : data
             }).then(response => {
                 console.log(response)
                 window.open(response.data.data.details.data.url);
+                this.$router.push({name : 'adminReservation', params : {id_reservation : response.data.data.idReservation}});
             }).catch(error => {
                 console.log(error)
             })
+        },
+         drawStripeForm(){
+            this.card = elements.create('card', {style: style});
+            this.card.mount('#card-element');
+        },
+        handleStripeForm(){
+            this.card.addEventListener('change', function(event) {
+            var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+        },
+        createTokenStripe(){
+            return stripe.createToken(this.card);
         }
     },
 }

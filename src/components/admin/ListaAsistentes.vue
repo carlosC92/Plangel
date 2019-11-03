@@ -1,5 +1,6 @@
 <template>
      <div class="col-xs-10 col-xs-offset-1 nopadding">
+         <vue-snotify></vue-snotify>
         <h4>Asistentes</h4>
 
        <!--  <div class="col-xs-9 no-padding-left">
@@ -58,9 +59,9 @@
                         <tr>
                         <th scope="col">Nombre</th>
                         <th scope="col">Tipo</th>
-                        <th scope="col">Datos del contacto</th>
+                       <!--  <th scope="col">Datos del contacto</th>
                         <th scope="col">Detalles de reserva</th>
-                        <th scope="col">Estado de cuenta</th>
+                        <th scope="col">Estado de cuenta</th> -->
                         <th scope="col">Proximo contacto</th>
                         <th scope="col">Historial</th>
                         <th scope="col">Acciones</th>
@@ -68,11 +69,11 @@
                     </thead>
                     <tbody>
                          <tr v-for="(assistant,index) in assistants.data" :key="index">
-                            <td data-label="Nombre">{{getFullName(assistant.name,assistant.lastname)}}</td>
+                            <td data-label="Nombre">{{assistant.name}}</td>
                             <td data-label="Tipo">Familiar</td>
-                            <td data-label="Datos del contacto"><a href="#">Ver datos</a></td>
+                           <!--  <td data-label="Datos del contacto"><a href="#">Ver datos</a></td>
                             <td data-label="Detalles de reserva"><a href="#">Ver detalles</a></td>
-                            <td data-label="Estado de cuenta"><a href="#">Ver Estado de Cuenta</a></td>
+                            <td data-label="Estado de cuenta"><a href="#">Ver Estado de Cuenta</a></td> -->
                             <td data-label="Proximo Contacto">25/JUN/2018</td>
                             <td>
                                 <dropdown ref="dropdown">
@@ -80,7 +81,7 @@
                                     <template class="dropdown-menu" slot="dropdown">
                                         <li><a @click="llamadasHistorialModal=true" href="#">Llamadas</a></li>
                                         <li><a @click="showEmailHistory(assistant.idReservation)" href="#">Emails</a></li>
-                                        <li><a href="#">SMS</a></li>
+                                        <!-- <li><a href="#">SMS</a></li> -->
                                     </template>
                                 </dropdown>
                             </td>
@@ -90,9 +91,9 @@
                                     <template class="dropdown-menu" slot="dropdown">
                                         <li><a href="#">Reservar</a></li>
                                         <li><a href="#">Editar</a></li>
-                                        <li><a href="#">Contactar Ahora</a></li>
-                                        <li><a href="#">Reenviar Invitacion</a></li>
-                                        <li><a href="#">Reenviar SMS</a></li>
+                                        <li><a @click="callNow(assistant)">Contactar Ahora</a></li>
+                                        <li><a @click="sendEmail(assistant)">Reenviar Invitacion</a></li>
+                                        <li><a @click="sendSMS(assistant)">Reenviar SMS</a></li>
                                     </template>
                                 </dropdown>
                             </td>
@@ -161,17 +162,74 @@ export default {
 
     methods: {
         getAssistants(){
-            return axios.get('http://api.plangel.com/event/29/reservation');
+            return axios.get('http://apiplan.smuffi.pet/event/143/assistant');
         },
 
-        getFullName(name,lastName){
-            return name+' '+lastName
-        },
 
         showEmailHistory(idReservation){
             this.idReservation = idReservation;
             this.emailHistorialModal = true;
-        }
+        },
+         callNow(user){
+          axios.post('http://apiplan.smuffi.pet/guest/'+user.idGuests+'/callNow')
+          .then(function (response) {
+              this.$snotify.success('Se programo la llamada exitosamente.','Llamada Programada', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          })
+          .catch( (error) => {
+            console.log(error);
+              this.$snotify.error('Horario de llamada no disponible','Ocurrio un error', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          });
+        },
+        sendEmail(user){
+          axios.post('http://apiplan.smuffi.pet/guest/'+user.idGuests+'/email',{
+            type : 'save_the_date'
+          })
+          .then((response) => {
+              this.$snotify.success('La invitacion se envio exitosamente.','Invitacion enviada', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          })
+          .catch( (error) => {
+              this.$snotify.error('Ocurrio un error intentelo de nuevo.','Error inesperado', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          });
+        },
+        sendSMS(user){
+          axios.get('http://apiplan.smuffi.pet/guest/'+user.idGuests+'/SMSWelcome')
+          .then( (response) => {
+              this.$snotify.success('El SMS se envio exitosamente.','SMS enviado con exito', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          })
+          .catch( (error) => {
+               this.$snotify.error('Ocurrio un error intentelo de nuevo.','Error inesperado', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          });
+        },
     },
 }
 </script>

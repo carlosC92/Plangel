@@ -10,7 +10,7 @@
                 <th>Observacion</th>
                 <th>Tiempo(s)</th>
             </tr>
-            <tr>
+            <tr v-for="(call,index) in calls" :key="index">
                 <td>25/05/30</td>
                 <td>05:30pm</td>
                 <td>Mérida</td>
@@ -41,8 +41,39 @@
 
 
 <script>
+import axios from 'axios';
 export default {
-    name:'llamadasHistorialModal'
+    props : {
+        user :{
+            type:Object,
+            default : null,
+        }
+    },
+    data() {
+        return {
+            calls : null
+        }
+    },
+    name:'llamadasHistorialModal',
+
+    watch: {
+        user: function (){
+            this.getCallHistory();
+        }
+    },
+
+    methods: {
+        getCallHistory(){
+            axios.get('http://apiplan.smuffi.pet/guest/'+this.user.idGuests+'/call')
+            .then(response => {
+                this.calls  = response.data;
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
+    },
+
 }
 </script>
 

@@ -1,5 +1,6 @@
 <template>
     <div class="col-xs-12 nopadding listGuests">
+      <vue-snotify></vue-snotify>
         <div class="col-xs-12 header nopadding">
             <div class="col-xs-2"><h5>Lista de invitados</h5></div>
             <div class="col-xs-3">
@@ -53,9 +54,9 @@
                           <dropdown ref="dropdown">
                             <btn type="primary" class="btn btnGreen dropdown-toggle dropdown-toggle">Historial<span class="caret"></span></btn>
                             <template class="dropdown-menu" slot="dropdown">
-                                <li><a href="#">Llamadas</a></li>
-                                <li><a href="#">Emails</a></li>
-                                <li><a href="#">SMS</a></li>
+                                <li><a @click="showCallHistory(invitado)">Llamadas</a></li>
+                                <li><a @click="showEmailHistory(invitado)">Emails</a></li>
+                                <!-- <li><a href="#">SMS</a></li> -->
                             </template>
                           </dropdown>
                         </td>
@@ -63,11 +64,11 @@
                           <dropdown ref="dropdown">
                             <btn type="primary" class="btn btnWhite dropdown-toggle dropdown-toggle">Acciones<span class="caret"></span></btn>
                             <template class="dropdown-menu" slot="dropdown">
-                                <li><a href="#">Reservar</a></li>
-                                <li><a  @click="editarGuest(invitado)" href="#">Editar</a></li>
-                                <li><a href="#">Contactar Ahora</a></li>
-                                <li><a href="#">Reenviar Invitacion</a></li>
-                                <li><a href="#">Reenviar SMS</a></li>
+                                <!-- <li><a href="#">Reservar</a></li> -->
+                                <li><a @click="editarGuest(invitado)" href="#">Editar</a></li>
+                                <li><a @click="callNow(invitado)">Contactar Ahora</a></li>
+                                <li><a @click="sendEmail(invitado)">Reenviar Invitacion</a></li>
+                                <li><a @click="sendSMS(invitado)">Reenviar SMS</a></li>
                             </template>
                           </dropdown>
                         </td>
@@ -76,42 +77,125 @@
             </table>
         </div> 
         <modal v-model="editarInvitado" :footer="false">
-            <editarInvitado :user = "selectedUser"/>
+            <editarInvitado :user = "selectedUser" :idEvent = "user_logged.idEvent"/>
         </modal>  
+         <modal v-model="llamadasHistorialModal" :footer="false">
+              <LlamadasHistorialModal :user = "selectedUser"/>
+          </modal>  
+          <modal v-model="emailHistorialModal" :footer="false">
+              <EmailHistorialModal :user = "selectedUser"/>
+          </modal> 
     </div>
 
 </template>
 
 <script>
+import ReservacionModal from '@/components/modals/reservacionModal.vue';
+import EmailHistorialModal from '@/components/modals/emailHistorialModal.vue';
+import LlamadasHistorialModal from '@/components/modals/llamadasHistorialModal.vue';
 import editarInvitado from '@/components/modals/agregarInvitadoModal.vue';
 import axios from 'axios';
 export default {
     name:'ListaInvitados',
     components:{
-        editarInvitado
+        editarInvitado,
+        LlamadasHistorialModal,
+        EmailHistorialModal
     },
     data() {
         return {
             invitados : {},
             editarInvitado : false,
-            selectedUser : null, 
+            selectedUser : null,
+            user_logged : null, 
+            llamadasHistorialModal:false,
+            emailHistorialModal : false,
         }
     },
     created() {
-        axios.get('http://api.plangel.com/event/29/guest')
-        .then(response => {
-            this.invitados = response.data.data;
-        })
-        .catch(error => {
-            console.log(error)
-        })
+      this.user_logged = JSON.parse(localStorage.getItem('logged'));
+      axios.get('http://apiplan.smuffi.pet/event/'+this.user_logged.idEvent+'/guest')
+      .then(response => {
+          this.invitados = response.data.data;
+      })
+      .catch(error => {
+          console.log(error)
+      })
     },
 
     methods: {
         editarGuest(user){
             this.editarInvitado = !this.editarInvitado
             this.selectedUser = user;
-        }
+        },
+         showCallHistory(user){
+            this.llamadasHistorialModal = !this.llamadasHistorialModal
+            this.selectedUser = user;
+        },
+         showEmailHistory(user){
+            this.emailHistorialModal = !this.emailHistorialModal
+            this.selectedUser = user;
+        },
+        callNow(user){
+          axios.post('http://apiplan.smuffi.pet/guest/'+user.idGuests+'/callNow')
+          .then(function (response) {
+              this.$snotify.success('Se programo la llamada exitosamente.','Llamada Programada', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          })
+          .catch( (error) => {
+            console.log(error);
+              this.$snotify.error('Horario de llamada no disponible','Ocurrio un error', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          });
+        },
+        sendEmail(user){
+          axios.post('http://apiplan.smuffi.pet/guest/'+user.idGuests+'/email',{
+            type : 'save_the_date'
+          })
+          .then((response) => {
+              this.$snotify.success('La invitacion se envio exitosamente.','Invitacion enviada', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          })
+          .catch( (error) => {
+              this.$snotify.error('Ocurrio un error intentelo de nuevo.','Error inesperado', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          });
+        },
+        sendSMS(user){
+          axios.get('http://apiplan.smuffi.pet/guest/'+user.idGuests+'/SMSWelcome')
+          .then( (response) => {
+              this.$snotify.success('El SMS se envio exitosamente.','SMS enviado con exito', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          })
+          .catch( (error) => {
+               this.$snotify.error('Ocurrio un error intentelo de nuevo.','Error inesperado', {
+                        timeout: 1000,
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true
+              });
+          });
+        },
     },
 }
 </script>

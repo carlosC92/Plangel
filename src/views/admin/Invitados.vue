@@ -6,7 +6,7 @@
             <div class="col-xs-9 no-padding-left">
                 <div class="col-xs-12 newGuestsContainer">
                     <h5>Nuevos(s) invitado(s)</h5>
-                    <div class="col-xs-4 upload-btn-wrapper no-padding-left">
+                   <!--  <div class="col-xs-4 upload-btn-wrapper no-padding-left">
                         <button class="uploadBtn" for="file-input">
                             <img src="img/iconExcel.svg"/>Subir Archivo Excel
                         </button>
@@ -19,19 +19,19 @@
                             <option>3</option>
                             <option>4</option>
                         </select>
-                    </div>
+                    </div> 
                     <div class="col-xs-3">
                         <button class="btn btnGreen">Agregar</button>
                     </div>
         
-                    <hr class="col-xs-12 nopadding">
+                    <hr class="col-xs-12 nopadding">-->
         
                     <div class="col-xs-4 upload-btn-wrapper no-padding-left">
                         <button @click="agregarInvitadoModal=true" role="button" class="uploadBtn" for="file-input">
-                            <img src="img/iconAgregarInvitado.svg"/>Agregar Invitado
+                            <img src="@/assets/img/iconAgregarInvitado.svg"/>Agregar Invitado
                         </button>
                     </div>
-                    <div class="col-xs-5">
+                   <!--  <div class="col-xs-5">
                         <select class="mySelector">
                             <option>Tipo de Invitación</option>
                             <option>2</option>
@@ -41,11 +41,11 @@
                     </div>
                     <div class="col-xs-3">
                         <button class="btn btnGreen">Agregar</button>
-                    </div>     
+                    </div>   -->   
                 </div>       
             </div>
             
-            <div class="col-xs-3 no-padding-right">
+           <!--  <div class="col-xs-3 no-padding-right">
                 <div class="col-xs-12 massiveForwardingContainer">
                     <h5>Reenvio Masivo</h5>
                     <div class="col-xs-12 nopadding">
@@ -69,12 +69,12 @@
                         <button class="btn btnGreen">Enviar a todos</button>
                     </div>  
                 </div>
-            </div>
+            </div> -->
             
             <ListaInvitados/>
 
             <modal v-model="agregarInvitadoModal" :footer="false">
-                <agregarInvitadoModal/>
+                <agregarInvitadoModal :idEvent = "user_logged.idEvent"/>
             </modal>  
             
         </div>
@@ -93,6 +93,9 @@ export default {
         NavBar,
         ListaInvitados,
         agregarInvitadoModal
+    },
+    created() {
+         this.user_logged = JSON.parse(localStorage.getItem('logged'));
     },
      data() {
         return {

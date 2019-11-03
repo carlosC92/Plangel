@@ -12,14 +12,15 @@
                 <ul class="nav navbar-nav navbar-right flexbox">
                     <li><router-link to="/admin/invitados">Invitados</router-link></li>
                     <li><router-link to="/admin/asistentes">Asistentes</router-link></li>
-                    <li><router-link to="/admin/callCenter">Call Center</router-link></li>
+                    <li><router-link to="/admin/cuentaMaestra">Cuenta maestra</router-link></li>
+                    <!-- <li><router-link to="/admin/callCenter">Call Center</router-link></li>
                     <li><a href="#">Sms</a></li>
                     <li><a href="#">Notificaciones</a></li>
                     <li><a href="#">Correo</a></li>
-                    <li><a href="#">Soporte</a></li>
-                    <li>
-                        <a href="#">Susana Rodríguez</a>                   
-                        <img src="../../assets/img/admin/ImgUser1.png" alt="">
+                    <li><a href="#">Soporte</a></li>-->
+                    <li> 
+                        <a href="#">{{user_logged.eventName}}</a>                   
+                        <img :src="user_logged.imgCoverCircle" alt="">
                     </li>
                 </ul>
             </div>
@@ -29,7 +30,15 @@
 
 <script>
 export default {
-    name: 'NavBar'
+    name: 'NavBar',
+    data() {
+        return {
+            user_logged : null
+        }
+    },
+    created() {
+        this.user_logged = JSON.parse(localStorage.getItem('logged'));
+    },
 }
 </script>
 

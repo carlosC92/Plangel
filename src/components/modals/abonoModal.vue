@@ -2,7 +2,7 @@
     <div class="container-fluid nopadding">
         <h4 class="text-center">Generar Abono</h4>
         <div class="col-xs-12 generarAbono"> 
-            <div class="col-xs-12 titularData">
+  <!--           <div class="col-xs-12 titularData">
                 <h5>Titular</h5>
                 <p>Javier Hernandez Lozano</p>
                 <p>+58 999 162 3846</p>
@@ -15,7 +15,7 @@
             <div class="col-xs-6">
                 <h5>Evento</h5>
                 <p>Boda Alan y paulina</p>
-            </div>         
+            </div>   -->       
             <div class="form-group col-xs-12">
                 <label for="estate">¿Cuanto desea abonar?</label>
                 <input type="number" class="form-control backgroundGray" v-model="mount" id="estate">
@@ -77,7 +77,7 @@
                 </div>
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-8 containerCheckbox">
-                        <p-radio value= "Tarjeta" v-model="payment_type" class="pretty p-image p-plain" name="checkbox1">
+                        <p-radio value= "Virtual" v-model="payment_type" class="pretty p-image p-plain" name="checkbox1">
                             <img class="image" src="../../assets/img/Checkin.png">
                             Tarjetas de Crédito/Débito emitidas en México.
                         </p-radio>
@@ -92,7 +92,7 @@
 
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-8 containerCheckbox">
-                        <p-radio class="pretty p-image p-plain" v-model="payment_type" name="checkbox1">
+                        <p-radio value= "Tienda" class="pretty p-image p-plain" v-model="payment_type" name="checkbox1">
                             <img class="image" src="../../assets/img/Checkin.png">
                             Pago en autoservicio(7 eleven,Farmacias del ahorro,extra).
                         </p-radio>
@@ -182,7 +182,7 @@ export default {
                     amount : this.mount,
                     reservation_id : this.$route.params.id_reservation
                 }
-            if(this.payment_type == 'Tarjeta'){
+            if(this.payment_type == 'Tarjeta' || this.payment_type == 'Suscripcion'){
                 await this.createTokenStripe()
                 .then(function(result) {
                     if (result.error) {

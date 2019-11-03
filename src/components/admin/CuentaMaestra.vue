@@ -13,31 +13,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Servicios contratados">Servicio</td>
-                            <td data-label="Costo">$9,928</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Servicios contratados">Servicio</td>
-                            <td data-label="Costo">$9,928</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Servicios contratados">Servicio</td>
-                            <td data-label="Costo">$9,928</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Servicios contratados">Servicio</td>
-                            <td data-label="Costo">$9,928</td>
+                        <tr v-for="(servicio,index) in servicios.data" :key="index">
+                            <td data-label="#">{{index+1}}</td>
+                            <td data-label="Servicios contratados">{{servicio.text}}</td>
+                            <td data-label="Costo">${{servicio.price}}</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-6 pull-right text-right nopadding">
-                        <p>Total Servicios: $29,784.00</p>
+                        <p>Total Servicios: ${{total_servicios}}</p>
                     </div>
                 </div>              
             </div>   
@@ -56,35 +41,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Abonos">Abono</td>
-                            <td data-label="Fecha">26/05/2019</td>
-                            <td data-label="Ingreso">$9,928</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Abonos">Abono</td>
-                            <td data-label="Fecha">26/05/2019</td>
-                            <td data-label="Ingreso">$9,928</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Abonos">Abono</td>
-                            <td data-label="Fecha">26/05/2019</td>
-                            <td data-label="Ingreso">$9,928</td>
-                        </tr>
-                        <tr>
-                            <td data-label="#">1</td>
-                            <td data-label="Abonos">Abono</td>
-                            <td data-label="Fecha">26/05/2019</td>
-                            <td data-label="Ingreso">$9,928</td>
+                         <tr v-for="(abono,index) in abonos.data" :key="index">
+                            <td data-label="#">{{index+1}}</td>
+                            <td data-label="Abonos">{{abono.text}}</td>
+                            <td data-label="Fecha">{{abono.date}}</td>
+                            <td data-label="Ingreso">${{abono.price}}</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="col-xs-12 nopadding">
                     <div class="col-xs-6 pull-right text-right nopadding">
-                        <p>Total Abono: $29,784.00</p>
+                        <p>Total Abono: ${{total_abonos}}</p>
                     </div>
                 </div>              
             </div>   
@@ -92,9 +59,9 @@
         
         <div class="col-xs-3 no-padding-right">
             <div class="col-xs-12 backgroundWhite balances">
-                <h5 class="text-center">Mis saldos</h5>
-                <p class="text-center">$59,568.00 MXN</p>
-                <p class="text-center">Cuenta: 018245532677</p>
+                <h5 class="text-center">Mi saldo</h5>
+                <p class="text-center">${{saldo}} MXN</p>
+               <!--  <p class="text-center">Cuenta: 018245532677</p>
                 <div class="col-12 nopadding payments">
                     <div class="col-xs-6 nopadding">
                         <p>Últimos Pagos:</p>
@@ -104,7 +71,7 @@
                         <p>$29,784.00</p>
                         <p>$29,784.00</p>
                     </div>
-                </div>
+                </div> -->
     
                 <div class="col-xs-12">
                     <button class="btn btnGreen">Realizar Pago</button>
@@ -117,8 +84,62 @@
 
 
 <script>
+import axios from 'axios'
 export default {
-    name:"CuentaMaestra"
+    name:"CuentaMaestra",
+    data() {
+        return {
+            abonos : null,
+            servicios : null
+        }
+    },
+    async created() {
+        await this.getAbonos()
+        await this.getServicios()
+    },
+    computed: {
+        total_servicios(){
+            let total = 0;
+            if(this.servicios.data.length > 0){
+                this.servicios.data.forEach(servicio => {
+                total += +servicio.price;
+                });
+            }
+            return total;
+        },
+        total_abonos(){
+            let total = 0;
+            if(this.abonos.data.length > 0){
+                this.abonos.data.forEach(abono => {
+                total += +abono.price;
+                });
+            }
+            return total;
+        },
+        saldo(){
+            return this.total_servicios-this.total_abonos 
+        }
+    },
+    methods: {
+        getAbonos(){
+            return axios.get('http://apiplan.smuffi.pet/event/143/packages?type=Abono')
+            .then( response => {
+                this.abonos = response.data;
+            })
+            .catch( error => {
+                
+            })
+        },
+        getServicios(){
+            return axios.get('http://apiplan.smuffi.pet/event/143/packages?type=Cargo')
+            .then( response => {
+                this.servicios = response.data;
+            })
+            .catch( error => {
+                
+            })
+        }   
+    },
 }
 </script>
 

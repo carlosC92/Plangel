@@ -1,9 +1,9 @@
 <template>
     <div class="nopadding menuOptions text-center">
-        <div id="adminReservation" class="option">
+       <!--  <div id="adminReservation" class="option">
             <div class="icon-admin-evento"></div>
             <p>Administrar Reservacion</p>
-        </div>
+        </div> -->
         <div id="transporte" class="option" @click="showModalTransporte">
             <div class="icon-transporte"></div>
             <p>Transporte</p>

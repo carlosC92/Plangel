@@ -1,5 +1,7 @@
 <template>
     <div class="col-xs-8 col-xs-offset-2 boxLogin">
+        <Loader :loader = loader></Loader>
+        <vue-snotify></vue-snotify>
         <div class="col-xs-12 containLogin noPadding">
             <div class="col-xs-6 noPadding imageBox">
                 <img src="../assets/img/image1login.png" alt="">
@@ -10,11 +12,11 @@
                 <form action="/action_page.php">
                     <div class="form-group col-xs-12">
                         <label for="email">CORREO ELECTRÓNICO</label>
-                        <input type="email" class="form-control" id="email">
+                        <input v-model="email" type="email" class="form-control" id="email">
                     </div>
                     <div class="form-group col-xs-12">
                         <label for="pwd">CONTRASEÑA</label>
-                        <input type="pwdword" class="form-control" id="pass">
+                        <input v-model="password" type="password" class="form-control" id="pass">
                     </div>
                     <div class="col-xs-12">
                         <p-check class="pretty p-image p-plain">
@@ -23,7 +25,7 @@
                         </p-check>
                     </div>
                     <div class="col-xs-12 text-center">
-                        <button type="submit" class="btnEnviar">INICIAR SESIÓN</button>
+                        <button type="button" @click="login" class="btnEnviar">INICIAR SESIÓN</button>
                         <p>¿Olvidaste tu contraseña?</p>
                         <router-link to="/">Recuperala Aqui</router-link>
                     </div>   
@@ -36,8 +38,47 @@
 
 
 <script>
+import Loader from '@/components/Loader.vue'
+import axios from 'axios';
 export default {
-    name:"Login"
+    name:"Login",
+    components: {
+       Loader
+    },
+    data() {
+        return {
+            email : null,
+            password :null,
+            loader : null
+        }
+    },
+    methods: {
+        login(){
+            this.loader = true;
+            axios({
+                method : 'post',
+                url : 'http://apiplan.smuffi.pet/login' ,
+                data : {
+                    user : this.email,
+                    password : this.password
+                }
+            }) 
+            .then( (response) => {
+                this.loader = false;
+                localStorage.setItem('logged',JSON.stringify(response.data.data));
+                this.$router.push({name : 'invitados'});
+            })
+            .catch( error => {
+                console.log(error)
+                this.$snotify.error(error.error,'Sin resultados', {
+                    timeout: 1000,
+                    showProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true
+                });
+            })
+        }
+    },
 }
 </script>
 

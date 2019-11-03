@@ -26,7 +26,7 @@
             <input v-else type="text" v-model="observations" class="form-control">
         </div>
     </div>
-    <button data-dismiss="modal" @click="saveGuest()" data-toggle="modal" data-target="#generatePay" class="btnGuardar">Guardar</button>
+    <button data-dismiss="modal" @click="guest()" data-toggle="modal" data-target="#generatePay" class="btnGuardar">Guardar</button>
 </div>  
          
 </template>
@@ -40,7 +40,12 @@ export default {
         user :{
             required : false,
             type : Object,
-            defaul: null
+            default: null
+        },
+        idEvent : {
+            required : false,
+            type : Number,
+            default : null
         }
     },
     data() {
@@ -52,15 +57,14 @@ export default {
         }
     },
     methods: {
-        saveGuest(){
-            axios.put('http://api.plangel.com/event/29/guest/3', {
+        updateGuest(){
+            axios.put('http://apiplan.smuffi.pet/event/'+this.idEvent+'/guest/'+this.user.idGuests, {
                 name: this.user ? this.user.name : this.name,
                 email: this.user ? this.user.email : this.email,
                 phone: this.user ? this.user.phone : this.phone,         
                 observations : this.user ? this.user.observations : this.observations,
                 relationship : "Tio",
-                importance : "Muy Importante",
-                idUser : 1          
+                importance : "Muy Importante",        
             })
             .then(function (response) {
                 console.log(response);
@@ -68,6 +72,29 @@ export default {
             .catch(function (error) {
                 console.log(error);
             });
+        },
+         saveGuest(){
+            axios.post('http://apiplan.smuffi.pet/event/'+this.idEvent+'/guest', {
+                name: this.user ? this.user.name : this.name,
+                email: this.user ? this.user.email : this.email,
+                phone: this.user ? this.user.phone : this.phone,         
+                observations : this.user ? this.user.observations : this.observations,
+                relationship : "Tio",
+                importance : "Muy Importante",        
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        guest(){
+            if(this.user != null){
+                this.updateGuest();
+            }else{
+                this.saveGuest();
+            }
         }
     },
 }

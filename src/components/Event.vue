@@ -15,7 +15,7 @@
         </div>
         <div class="col-xs-12 col-lg-8 col-lg-offset-2">
             <div class="col-xs-12 col-lg-7 eventInfo">
-                <p class="colorGray">Nam quis nibh eget enim dictum elementum. Suspendisse feugiat diam eget lacus feugiat condimentum. Ut est erat, scelerisque ac risus mattis, posuere hendrerit arcu. Morbi scelerisque metus eros. Etiam condimentum dui at neque dictum, sed feugiat dolor elementum. Nunc fringilla neque ut sapien dignissim, vitae fringilla metus.</p>              
+                <p class="colorGray">{{event.message}}</p>              
             </div>
             <div class="col-xs-12 col-lg-5 pull-right eventDates">
                 <h4 class="colorGray">Fecha del Evento</h4>
@@ -60,23 +60,12 @@
                 <h4 class="text-center colorGray">Ponentes</h4>
 
                 <div class="col-xs-12 speakers text-center nopadding">
-                    <div class="speaker">
-                        <img src="@/assets/img/event/ImgUser1.png" alt="">
-                        <p>Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae</p>
-                        <p>Sara Duarte</p>
+                    <div class="speaker" v-for="(speaker,index) in speakers" :key="index">
+                        <img :src="speaker.imagen" alt="">
+                        <p>{{speaker.description}}</p>
+                        <p>{{speaker.name}}</p>
                     </div>
 
-                    <div class="speaker">
-                        <img src="@/assets/img/event/ImgUser2.png" alt="">
-                        <p>Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae</p>
-                        <p>Sara Duarte</p>
-                    </div>
-
-                    <div class="speaker">
-                        <img src="@/assets/img/event/ImgUser3.png" alt="">
-                        <p>Vestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitaeVestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitaeVestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitaeVestibulum pulvinar vulputate tincidunt. Suspendisse eu nibh est. Ut eros ante, pretium vitae</p>
-                        <p>Sara Duarte</p>
-                    </div>  
                 </div> 
             </div>    
         </div>  
@@ -86,7 +75,7 @@
                 <div class="col-xs-12 col-sm-6" v-for="(element, index) in event.chronology.data" :key="index">
                     <div class="col-xs-12 nopadding eventActivity">
                         <div class="col-xs-5 nopadding">
-                            <img src="@/assets/img/event/ImgHotel.png" alt="">
+                            <img :src="element.image" alt="">
                         </div>
                         <div class="col-xs-7 activityDescription text-center">      
                             <p>{{element.type}}</p>
@@ -102,7 +91,7 @@
             <img src="@/assets/img/event/LogoHotel1.png" class="logoHotel" alt="">
             <div class="col-xs-12 col-md-8 col-md-offset-2 nopadding">
                 <div class="col-xs-12 col-sm-6 col-md-3 hotelHab" @click="categoryModal=true"  v-for="(element, index) in event.hotel.data.categories.data" :key="index">
-                    <img src="@/assets/img/event/ImgDetallesHotel.png" alt="">
+                    <img :src="element.image" alt="">
                     <div class="col-xs-12 hotelDescription">
                         <p>{{element.type}}</p>
                         <p>${{element.occupation.data[0].price}} MXN</p>
@@ -167,6 +156,7 @@ export default {
         return {
             index: null,
             event : null,
+            speakers : null,
             images:[
                 require("../assets/img/event/ImgGaleria1.png"),
         
@@ -189,6 +179,7 @@ export default {
     },
      mounted() {
         this.getEventData();
+        this.getSpeakers();
     },
     methods: {
         dateFormat(date){
@@ -207,6 +198,18 @@ export default {
            await axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id)
             .then(response => {
                 this.event = response.data.data;
+                console.log(response.data.data)
+                
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+
+        async getSpeakers(){
+           await axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id+'/speakers')
+            .then(response => {
+                this.speakers = response.data.data;
                 console.log(response.data.data)
                 
             })
@@ -500,6 +503,8 @@ h4{
 
 .hotelHab img{
     width: 100%;
+    height: 145px;
+    max-height: 145px;
 }
 
  .reservation .hotelHab .hotelDescription{
@@ -680,8 +685,10 @@ h4{
 }
 
 .eventActivity div > img{
-    width: 100%;
+       width: 100%;
     height: 100%;
+    max-height: 120px;
+    border-radius: 10px;
 }
 
 .activityDescription{

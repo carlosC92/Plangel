@@ -10,8 +10,8 @@
                     </div>
                 </div> 
                 <div class="col-xs-12 col-md-10 col-md-offset-1 crogramActivity">
-                    <div class="col-xs-2 hidden-xs nopadding">
-                        <img src="../../assets/img/crograma1.png" alt="">
+                    <div class="col-xs-2 hidden-xs" style="padding-left:0px">
+                        <img class="img-activity" :src="element.image" alt="">
                     </div>
                     <div class="col-xs-12 col-md-3 activityData">
                         <p>Actividad</p>
@@ -134,6 +134,13 @@ export default {
     font-size: 13px;
     color: white;
     margin: 0px;
+}
+
+.img-activity{
+    width: 100%;
+    max-height: 270px;
+    height: 100%;
+    border-radius: 10px 0px 0px 10px;
 }
 
 .cronograma .date >  div  p:last-child{
