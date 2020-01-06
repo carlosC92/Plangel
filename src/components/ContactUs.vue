@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         sendMessage(){  
-            return axios.post('http://api.plangel.com/contact',{
+            return axios.post('http://apiplan.smuffi.pet/contact',{
                 name : this.name,
                 phone : this.phone,
                 message : this.message,

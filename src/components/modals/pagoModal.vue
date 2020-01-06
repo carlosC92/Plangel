@@ -171,8 +171,8 @@ export default {
                         {
                             idEvent : this.$route.params.id_event,
                             name : this.dataReserveProcess.name+this.dataReserveProcess.lastname,
-                            dateIn : "2020-09-19",                     
-                            dateOut : "2020-09-21",
+                            dateIn : "2020-09-18",
+                            dateOut : "2020-09-20",
                             idOccupation : this.dataReserveProcess.rooms[0].ticket_occupation,
                             idCategory : this.dataReserveProcess.rooms[0].ticket_category
                         }
@@ -197,9 +197,11 @@ export default {
                 method : 'post',
                 url : 'http://apiplan.smuffi.pet/event/'+ this.$route.params.id_event+'/frontendReservation',
                 data : data
-            }).then(response => {
-                console.log(response)
-                window.open(response.data.data.details.data.url);
+            }).then( (response) => {
+                document.body.classList.remove('modal-open');
+                if(this.dataReserveProcess.payment_type == 'Paypal'){
+                    window.open(response.data.data.details.data.url);
+                }           
                 this.$router.push({name : 'adminReservation', params : {id_reservation : response.data.data.idReservation}});
             }).catch(error => {
                 console.log(error)

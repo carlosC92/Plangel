@@ -55,15 +55,7 @@ export default {
                 mount : 0
             },
             loader : null,
-            assistant_list: [
-                {  
-                    name: null,
-                    ticket_type: null,
-                    ticket_price: null,
-                    ticket_id: null,
-                    category_id: null
-                }
-            ],
+            assistant_list: [],
             validated : false,
 
         }
@@ -130,7 +122,7 @@ export default {
         buyTicket : async function(){
             await axios.post('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/room',
             {
-                idEvent : "29",
+                idEvent : this.$route.params.id_event,
                 name : this.assistant_list[0].name,
                 idOccupation : this.assistant_list[0].ticket_id,
                 dateIn : "2020-09-18",

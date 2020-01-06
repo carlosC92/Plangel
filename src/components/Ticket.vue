@@ -9,7 +9,7 @@
             <input v-model="tickets_number" type="number" class="form-control">
         </div>
         <div v-for="(item, index) in assistants" :key="index" class="form-group col-xs-12 nopadding">
-            <div class="col-xs-8">
+            <div class="col-xs-5">
                 <label for="nameEvent">Nombre Asistente {{index+1}}</label>
                 <input v-validate ="'required'" name="assistant" v-model="assistant_list[index].name" type="text" class="form-control">
             </div>  
@@ -18,11 +18,11 @@
                 <select v-model="assistant_list[index].ticket_type"  @change="getPriceTicket(assistant_list[index].ticket_price)" class="form-control">
                     <option v-for="(item, index) in tickets_type" :key="index">{{item.type}}</option>
                 </select>
+            </div>
+            <div class="col-xs-3">
+                <label for="city">Precio</label>
+                <input v-model="assistant_list[index].ticket_price" type="text" class="form-control" readonly>
             </div>       
-        </div>
-        <div class="form-group col-xs-6">
-            <label for="city">Precio</label>
-            <input v-model="ticket_price"  type="text" class="form-control">
         </div>
         <div class="form-group col-xs-6">
             <label for="estate">Sub total</label>
@@ -74,13 +74,12 @@ export default {
 
     async created() {
         this.$emit('loading',true);
-        if(this.dataReserveProcess.ticket_data){
-            this.dataReserveProcess.ticket_data.assistant_list.forEach((assistant,index) => {
+        if(this.dataReserveProcess.rooms){
+            this.dataReserveProcess.rooms.forEach((assistant,index) => {
                 this.assistant_list[index] = assistant
             });
-            this.ticket_type = this.dataReserveProcess.ticket_data.ticket_type
-            this.tickets_number = this.dataReserveProcess.ticket_data.tickets_number
-            this.assistants = this.dataReserveProcess.ticket_data.assistants
+            this.tickets_number = this.dataReserveProcess.tickets_number
+            this.assistants = this.dataReserveProcess.assistants
         }
         await this.getTickets()
         this.$emit('loading',false);

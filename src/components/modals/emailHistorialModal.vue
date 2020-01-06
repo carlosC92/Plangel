@@ -1,28 +1,20 @@
 <template>
 <div class="container-fluid nopadding myPayments">
+    <Loader :loader = loader :modal = true></Loader>
     <h4 class="text-center">Historial Emails</h4>
     <div class="col-xs-12 text-center">     
-        <h2 v-if="emails.length == 0" class="form-control">Sin emails</h2>
+        <h2 v-if="emails.length == 0">Sin emails</h2>
         <table v-else>
             <tr>
                 <th>Tipo</th>
                 <th>Fecha</th>
                 <th>Status</th>
             </tr>
-            <tr>
+            <tr v-for="(email,index) in emails" :key="index">
                 <td>Save the date</td>
-                <td>25/06/2019</td>
-                <td>Leido</td>
-            </tr>
-            <tr>
-                <td>Save the date</td>
-                <td>25/06/2019</td>
-                <td>Leido</td>
-            </tr>
-            <tr>
-                <td>Save the date</td>
-                <td>25/06/2019</td>
-                <td>Leido</td>
+                <td>{{email.dateCreate}}</td>
+                <td v-if="email.attend == 1 ">Leido</td>
+                <td v-else>Sin leer</td>
             </tr>
         </table>
     </div>
@@ -32,6 +24,7 @@
 
 
 <script>
+import Loader from '@/components/Loader.vue'
 import axios from 'axios';
 export default {
     name:'emailHistorialModal',
@@ -42,19 +35,26 @@ export default {
             required : false
         }
     },
+    components:{
+        Loader
+    },
     data() {
         return {
-            emails : {}
+            emails : {},
+            loader : false,
         }
     },
     watch: {
         async user(){
+            this.loader = true;
             await this.getEmails()
                 .then( response => {
                     this.emails = response.data.data;
+                    this.loader = false;
                     console.log(response);
                 })
                 .catch( error => {
+                    this.loader = false;
                     console.log(error);
                 })
         }

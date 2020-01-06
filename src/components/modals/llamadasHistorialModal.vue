@@ -1,8 +1,9 @@
 <template>
 <div class="container-fluid nopadding myPayments">
     <h4 class="text-center">Historial Llamadas</h4>
-    <div class="col-xs-12 text-center">        
-        <table>
+    <div class="col-xs-12 text-center">   
+        <h2 v-if="calls.data.length == 0">Sin llamadas</h2>     
+        <table v-else>
             <tr>
                 <th>Fecha de contacto</th>
                 <th>Hora</th>
@@ -10,28 +11,12 @@
                 <th>Observacion</th>
                 <th>Tiempo(s)</th>
             </tr>
-            <tr v-for="(call,index) in calls" :key="index">
-                <td>25/05/30</td>
-                <td>05:30pm</td>
+            <tr v-for="(call,index) in calls.data" :key="index">
+                <td>{{call.dateCreate}}</td>
+                <td>{{call.hourCreate}}</td>
                 <td>Mérida</td>
-                <td>No contesto</td>
+                <td>Contesto</td>
                 <td>5 min</td>
-            </tr>
-            <tr>
-                <td>25/05/30</td>
-                <td>05:30pm</td>
-                <td>Mérida</td>
-                <td>No contesto</td>
-                <td>5 min</td>
-
-            </tr>
-            <tr>
-                <td>25/05/30</td>
-                <td>05:30pm</td>
-                <td>Mérida</td>
-                <td>No contesto</td>
-                <td>5 min</td>
-
             </tr>
         </table>
     </div>

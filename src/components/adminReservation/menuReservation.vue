@@ -69,7 +69,7 @@
         <div class="col-xs-8">
             <hr>
 
-            <div class="col-xs-12 event-info" v-for="room in reservation_info.rooms.data" :key="room.id">
+            <div class="col-xs-12 event-info" style="margin-bottom:20px;" v-for="room in reservation_info.rooms.data" :key="room.id">
                 <div class="col-xs-2 options pull-right nopadding">
                     <img src="@/assets/img/iconPrint.svg" alt="">    
                     <img src="@/assets/img/iconEdit.svg" alt="">
@@ -191,6 +191,7 @@ export default {
         this.loader = true;
         await Promise.all([this.getReservationInfo(), this.getEvent(),this.getPayments()]); 
         this.loader= false;
+        
     },
 
    computed: {
@@ -275,7 +276,7 @@ export default {
             });
         },
         getEvent : function(){
-            return axios.get('event/'+ this.$route.params.id_event)
+            return axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id_event)
             .then( response =>{
                 this.event = response.data.data;
             })
@@ -298,7 +299,7 @@ export default {
             this.reloadModal = false;
         },
         getReservationInfo : function (){
-            return axios.get('event/'+this.$route.params.id_event+'/reservation/'+this.$route.params.id_reservation)
+            return axios.get('http://apiplan.smuffi.pet/event/'+this.$route.params.id_event+'/reservation/'+this.$route.params.id_reservation)
             .then( response => {
                 this.reservation_info = response.data.data;
             })
@@ -308,7 +309,7 @@ export default {
         },
 
         updateRooms : function(){
-            return axios.get('reservation/'+this.$route.params.id_reservation+'/room/')
+            return axios.get('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/room/')
             .then( response => {
                 this.reservation_info.rooms = response.data;
             })
@@ -324,7 +325,7 @@ export default {
         },
 
         getPayments: function (){
-            return axios.get('reservation/'+this.$route.params.id_reservation+'/payments',{
+            return axios.get('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/payments',{
                 params: {
                     status : 'Pagado'
                 }
@@ -340,7 +341,7 @@ export default {
 
         async deleteReservationRoom(id_room){
             this.loader = true;
-            await axios.delete('reservation/'+this.$route.params.id_reservation+'/room/'+id_room)
+            await axios.delete('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/room/'+id_room)
             .then( async response => {
                 this.loader = false;
                     await this.getReservationInfo();

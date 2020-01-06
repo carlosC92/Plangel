@@ -97,7 +97,7 @@ export default {
     },
     methods: {
         getPayments(){
-            return axios.get('reservation/'+this.$route.params.id_reservation+'/payments')
+            return axios.get('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/payments')
         },
 
         onFileChange(paymend_id,payment_mount,e){
