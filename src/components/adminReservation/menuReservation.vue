@@ -276,7 +276,7 @@ export default {
             });
         },
         getEvent : function(){
-            return axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id_event)
+            return axios.get('http://plangel.opticascontreras.com/event/'+ this.$route.params.id_event)
             .then( response =>{
                 this.event = response.data.data;
             })
@@ -299,7 +299,7 @@ export default {
             this.reloadModal = false;
         },
         getReservationInfo : function (){
-            return axios.get('http://apiplan.smuffi.pet/event/'+this.$route.params.id_event+'/reservation/'+this.$route.params.id_reservation)
+            return axios.get('http://plangel.opticascontreras.com/event/'+this.$route.params.id_event+'/reservation/'+this.$route.params.id_reservation)
             .then( response => {
                 this.reservation_info = response.data.data;
             })
@@ -309,7 +309,7 @@ export default {
         },
 
         updateRooms : function(){
-            return axios.get('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/room/')
+            return axios.get('http://plangel.opticascontreras.com/reservation/'+this.$route.params.id_reservation+'/room/')
             .then( response => {
                 this.reservation_info.rooms = response.data;
             })
@@ -325,7 +325,7 @@ export default {
         },
 
         getPayments: function (){
-            return axios.get('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/payments',{
+            return axios.get('http://plangel.opticascontreras.com/reservation/'+this.$route.params.id_reservation+'/payments',{
                 params: {
                     status : 'Pagado'
                 }
@@ -341,7 +341,7 @@ export default {
 
         async deleteReservationRoom(id_room){
             this.loader = true;
-            await axios.delete('http://apiplan.smuffi.pet/reservation/'+this.$route.params.id_reservation+'/room/'+id_room)
+            await axios.delete('http://plangel.opticascontreras.com/reservation/'+this.$route.params.id_reservation+'/room/'+id_room)
             .then( async response => {
                 this.loader = false;
                     await this.getReservationInfo();

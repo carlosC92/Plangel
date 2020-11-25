@@ -86,7 +86,7 @@ export default {
                 this.$emit('validateForm',{'passValidation':true, 'data':this.dataReserveProcess}); 
                   
             }else{
-                this.$emit('validateForm',false)  
+                this.$emit('validateForm',{'passValidation':false})  
             }
             this.validated = false
         }

@@ -195,7 +195,7 @@ export default {
             }
             axios({
                 method : 'post',
-                url : 'http://apiplan.smuffi.pet/event/'+ this.$route.params.id_event+'/frontendReservation',
+                url : 'http://plangel.opticascontreras.com/event/'+ this.$route.params.id_event+'/frontendReservation',
                 data : data
             }).then( (response) => {
                 document.body.classList.remove('modal-open');

@@ -1,7 +1,7 @@
 <template>
 <div class="container-fluid nopadding myPayments">
     <h4 class="text-center">Historial Llamadas</h4>
-    <div class="col-xs-12 text-center">   
+    <div class="col-12 text-center">   
         <h2 v-if="calls.data.length == 0">Sin llamadas</h2>     
         <table v-else>
             <tr>
@@ -49,7 +49,7 @@ export default {
 
     methods: {
         getCallHistory(){
-            axios.get('http://apiplan.smuffi.pet/guest/'+this.user.idGuests+'/call')
+            axios.get('http://plangel.opticascontreras.com/guest/'+this.user.idGuests+'/call')
             .then(response => {
                 this.calls  = response.data;
             })

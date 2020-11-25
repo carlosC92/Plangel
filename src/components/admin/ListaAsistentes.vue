@@ -162,7 +162,8 @@ export default {
 
     methods: {
         getAssistants(){
-            return axios.get('http://apiplan.smuffi.pet/event/143/assistant');
+            this.user_logged = JSON.parse(localStorage.getItem('logged'));
+            return axios.get('http://apiplan.smuffi.pet/event/'+this.user_logged.idEvent+'/assistant');
         },
 
 

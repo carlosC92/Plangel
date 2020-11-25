@@ -148,7 +148,7 @@ export default {
             this.ticket_price = ticket_price;
         },
         getTickets: function(){
-            return axios.get('http://apiplan.smuffi.pet/event/'+this.$route.params.id_event+'/category')
+            return axios.get('http://plangel.opticascontreras.com/event/'+this.$route.params.id_event+'/category')
             .then(response => {
             this.tickets_type = response.data.data
             this.assistant_list[0] =

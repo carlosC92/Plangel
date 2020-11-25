@@ -68,7 +68,7 @@ export default {
    },
     created() {   
         this.loader = true    
-        axios.get('http://apiplan.smuffi.pet/events')
+        axios.get('http://plangel.opticascontreras.com/events')
         .then(response => {
             this.events = response.data.data;
             this.loader = false
@@ -82,7 +82,7 @@ export default {
         search(e){ 
            if(this.eventToSearch != ""  && event.key == "Enter"){
             this.loader = true   
-            axios.get('http://apiplan.smuffi.pet/event/'+this.eventToSearch+'/search')
+            axios.get('http://plangel.opticascontreras.com/event/'+this.eventToSearch+'/search')
             .then(response => {
                 this.event_search = response.data.data;
                 this.loader = false

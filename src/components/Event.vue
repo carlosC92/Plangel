@@ -195,7 +195,7 @@ export default {
             })
         },
         async getEventData(){
-           await axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id)
+           await axios.get('http://plangel.opticascontreras.com/event/'+ this.$route.params.id)
             .then(response => {
                 this.event = response.data.data;
                 console.log(response.data.data)
@@ -207,7 +207,7 @@ export default {
         },
 
         async getSpeakers(){
-           await axios.get('http://apiplan.smuffi.pet/event/'+ this.$route.params.id+'/speakers')
+           await axios.get('http://plangel.opticascontreras.com/event/'+ this.$route.params.id+'/speakers')
             .then(response => {
                 this.speakers = response.data.data;
                 console.log(response.data.data)
